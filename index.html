@@ -33,7 +33,7 @@ async function abrir(cod){var o=document.getElementById('out');o.innerHTML='<p c
     var k=await crypto.subtle.importKey('raw',new TextEncoder().encode(n),'PBKDF2',false,['deriveKey']);
     var key=await crypto.subtle.deriveKey({name:'PBKDF2',salt:b64(j.sal),iterations:j.it,hash:'SHA-256'},k,{name:'AES-GCM',length:256},false,['decrypt']);
     var d=JSON.parse(new TextDecoder().decode(await crypto.subtle.decrypt({name:'AES-GCM',iv:b64(j.iv)},key,b64(j.ct))));
-    o.innerHTML='<p class="msg">Olá, <b>'+esc(d.nome)+'</b>!</p>'+d.envios.map(card).join('');
+    o.innerHTML='<p class="msg">Olá, <b>'+esc(d.nome)+'</b>!</p>'+(d.envios.length?d.envios.map(card).join(''):'<p class="msg">Nenhum envio em andamento no momento. Quando sua próxima caixa sair, ela aparece aqui.</p>');
     try{history.replaceState(null,'','#'+cod)}catch(e){}
   }catch(e){o.innerHTML='<p class="msg">Código não encontrado. Confira o código que mandamos no WhatsApp.</p>'}}
 function card(e){var i=ETAPAS.findIndex(function(x){return x[0]===e.etapa});var oc=e.etapa==='ocorrencia';if(oc)i=3;
