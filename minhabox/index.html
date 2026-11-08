@@ -31,7 +31,8 @@ input,select{font:inherit;font-size:16px;color:var(--ink);background:#121317;bor
 input:focus,select:focus{border-color:var(--acc);outline:none}
 label{display:flex;flex-direction:column;gap:6px;font-size:13px;color:var(--ink2)}
 .campos{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.campos .l2{grid-column:1/-1}
-form.entrar{display:flex;gap:8px}form.entrar input{text-transform:uppercase;letter-spacing:.12em}
+form.entrar{max-width:400px;margin:0 auto}.dica{background:var(--panel2);border-radius:var(--r2);padding:10px 12px;font-size:13px;color:var(--ink2)}.dica b{color:var(--ink)}
+.topo{display:flex;justify-content:center;gap:4px;margin:-8px 0 12px}.topo button{min-height:34px;padding:6px 10px;font-size:13px}.ok{color:var(--pago);font-size:13px}
 .ola{font-family:var(--f-d);font-size:22px;text-align:center}.atualizado{color:var(--ink2);text-align:center;font-size:13px;margin:4px 0 16px}
 .abas{display:flex;gap:6px;overflow-x:auto;margin:0 -16px 6px;padding:2px 16px;scrollbar-width:none}.abas::-webkit-scrollbar{display:none}
 .aba{flex:none;border-radius:999px;padding:9px 15px;min-height:40px;font-weight:600;font-size:14px;background:var(--panel);border:1px solid var(--line);color:var(--ink2)}
@@ -59,12 +60,22 @@ ul.lista{margin:0;padding-left:18px;color:var(--ink2);font-size:14px}
 @media (prefers-reduced-motion:no-preference){.bloco{animation:sobe .25s ease both}@keyframes sobe{from{opacity:0;transform:translateY(6px)}}}
 </style></head><body><main>
 <img class="logo" src="../logo.png" alt="" onerror="this.remove()"><h1>Minha Box</h1><p class="sub">World of Splits</p>
-<div id="entrar"><p class="sub" style="margin-top:-12px">Digite o código de acesso que mandamos no WhatsApp.</p>
-<form class="entrar" id="f"><input id="c" placeholder="ABCD-1234" autocomplete="off" aria-label="Código de acesso"><button class="pri">Entrar</button></form></div>
+<div id="entrar"><form class="entrar bloco" id="f" novalidate><h2>Entrar</h2>
+<label>Login<input id="lg" autocomplete="username" placeholder="Celular com DDD ou seu login" autocapitalize="none"></label>
+<label>Senha<input id="sn" type="password" autocomplete="current-password" autocapitalize="none"></label>
+<p class="erro" id="f-erro" hidden></p><button class="pri" type="submit">Entrar</button>
+<p class="dica"><b>Primeiro acesso?</b> O login é o seu celular com DDD. A senha são as 2 primeiras letras do seu nome + os 6 últimos números do seu CPF.<br>Ex.: Maria, CPF terminado em 123456 → <b>ma123456</b></p>
+<button class="sem" type="button" data-esqueci>Esqueci minha senha</button></form>
+<form class="entrar bloco" id="fe" novalidate hidden><h2>Esqueci minha senha</h2><p class="fraco peq">Digite seu celular ou seu login. Mandamos uma senha temporária no WhatsApp cadastrado em até 10 minutos.</p>
+<label>Celular ou login<input id="lge" autocomplete="username" autocapitalize="none"></label><p class="erro" id="fe-erro" hidden></p>
+<button class="pri" type="submit">Receber senha no WhatsApp</button><button class="sem" type="button" data-voltar>Voltar</button></form></div>
 <div id="out" aria-live="polite"></div>
 <script>
-var CONF={"empresa": "World of Splits", "whats": "", "pix": "739c3c17-3a05-40b0-8a88-051d0d14bf86", "titular": "", "parcelas": 6, "tipos": {"split": "Decants", "apc": "APC (frasco)"}, "pub": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAwle4XlfzCajKFOuz5CDnvr2W5p9vcIiO9HXdf0bz81ocWUEvmtz+L6zspQDRCN4i1112frLUA4Lco+OgGRS2GisVrj6haX4iDk4XW+B0E98BnJbJqSZm1LNtfA6iv7jUDSDK94EAnpYOr6dgzEP8GuakH+gzf2c2AyteVe2WkIAjl3p/t4SDM6Rs/VX0nxLCSsAM6bwviT1p9cf9xWoQLcfWP4XSmby7TFJ/J9vnYiOlJ3VEIqQj0fHHPjWyPaxjykG2IoLTgwUsH5+xptlrPvnaDDrMCUDP3S5oHTsPRsgVcfYLuWhwR9yfOLWqBO9zRgnjw/tHrlTXqsR8zJpmVQIDAQAB", "topico": "wos-mb-6k4fCQue2e3TxSeAGw2C4q3yVvOaum"};var D=null,COD='',ABA='box',FORM=false;
-function norm(c){return String(c||'').toUpperCase().replace(/[^A-Z0-9]/g,'')}
+var CONF={"empresa": "World of Splits", "whats": "", "pix": "739c3c17-3a05-40b0-8a88-051d0d14bf86", "titular": "", "parcelas": 6, "tipos": {"split": "Decants", "apc": "APC (frasco)"}, "pub": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAwle4XlfzCajKFOuz5CDnvr2W5p9vcIiO9HXdf0bz81ocWUEvmtz+L6zspQDRCN4i1112frLUA4Lco+OgGRS2GisVrj6haX4iDk4XW+B0E98BnJbJqSZm1LNtfA6iv7jUDSDK94EAnpYOr6dgzEP8GuakH+gzf2c2AyteVe2WkIAjl3p/t4SDM6Rs/VX0nxLCSsAM6bwviT1p9cf9xWoQLcfWP4XSmby7TFJ/J9vnYiOlJ3VEIqQj0fHHPjWyPaxjykG2IoLTgwUsH5+xptlrPvnaDDrMCUDP3S5oHTsPRsgVcfYLuWhwR9yfOLWqBO9zRgnjw/tHrlTXqsR8zJpmVQIDAQAB", "topico": "wos-mb-6k4fCQue2e3TxSeAGw2C4q3yVvOaum"};var D=null,S=null,ABA='box',FORM=false,CONTA=false,COD='',PADRAO='';
+function semAc(t){return String(t||'').normalize('NFD').replace(/[̀-ͯ]/g,'')}
+function telLogin(t){var d=String(t||'').replace(/\D/g,'');if(d.length>=12&&d.slice(0,2)==='55')d=d.slice(2);return d.length>=10?d.slice(0,2)+d.slice(-8):''}
+function normLogin(t){t=String(t||'').trim();if(t&&!/[A-Za-zÀ-ÿ]/.test(t)){var x=telLogin(t);return x?'tel:'+x:''}var n=semAc(t).toLowerCase().replace(/\s+/g,' ').trim();return n?'u:'+n:''}
+function normSenha(s){return semAc(s).toLowerCase().replace(/\s+/g,'')}function normCod(s){return String(s||'').toUpperCase().replace(/[^A-Z0-9]/g,'')}
 function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
 function brl(v){return 'R$ '+Number(v||0).toFixed(2).replace('.',',').replace(/\B(?=(\d{3})+(?!\d))/g,'.')}
 function ml(v){v=Number(v||0);return (v%1?String(v).replace('.',','):v)+'ml'}
@@ -77,17 +88,55 @@ async function enviar(obj){ /* criptografa para o programa e entrega pelo canal 
   var pub=await crypto.subtle.importKey('spki',b64(CONF.pub),{name:'RSA-OAEP',hash:'SHA-256'},false,['encrypt']);
   var k=crypto.getRandomValues(new Uint8Array(32)),iv=crypto.getRandomValues(new Uint8Array(12));
   var ak=await crypto.subtle.importKey('raw',k,'AES-GCM',false,['encrypt']);
-  var ct=await crypto.subtle.encrypt({name:'AES-GCM',iv:iv},ak,new TextEncoder().encode(JSON.stringify(Object.assign({cod:COD,ts:Date.now()},obj))));
+  var ct=await crypto.subtle.encrypt({name:'AES-GCM',iv:iv},ak,new TextEncoder().encode(JSON.stringify(Object.assign({arq:S?S.arq:'',k:S?S.k:'',ts:Date.now()},obj))));
   var wk=await crypto.subtle.encrypt({name:'RSA-OAEP'},pub,k);
   var r=await fetch('https://ntfy.sh/'+CONF.topico,{method:'POST',body:JSON.stringify({v:1,k:de64(wk),iv:de64(iv),ct:de64(ct)})});if(!r.ok)throw new Error('envio')}
-async function abrir(cod){var o=document.getElementById('out');o.innerHTML='<p class="msg">Abrindo sua box...</p>';var n=norm(cod);
-  try{var r=await fetch('d/'+(await sha('wos-box:'+n))+'.json?t='+Date.now());if(!r.ok)throw 0;var j=await r.json();
-    var k=await crypto.subtle.importKey('raw',new TextEncoder().encode(n),'PBKDF2',false,['deriveKey']);
-    var key=await crypto.subtle.deriveKey({name:'PBKDF2',salt:b64(j.sal),iterations:j.it,hash:'SHA-256'},k,{name:'AES-GCM',length:256},false,['decrypt']);
-    D=JSON.parse(new TextDecoder().decode(await crypto.subtle.decrypt({name:'AES-GCM',iv:b64(j.iv)},key,b64(j.ct))));COD=n.slice(0,4)+'-'+n.slice(4);
-    document.getElementById('entrar').hidden=true;try{history.replaceState(null,'','#'+cod)}catch(e){}
-    FORM=!D.dados.confirmado&&!ls('mb-dados-'+COD)&&!ls('mb-pular-'+COD);tela();
-  }catch(e){o.innerHTML='<p class="msg">Código não encontrado. Confira o código que mandamos no WhatsApp.</p>'}}
+async function desembrulhar(senha,e){var k=await crypto.subtle.importKey('raw',new TextEncoder().encode(senha),'PBKDF2',false,['deriveKey']);
+  var key=await crypto.subtle.deriveKey({name:'PBKDF2',salt:b64(e.sal),iterations:e.it,hash:'SHA-256'},k,{name:'AES-GCM',length:256},false,['decrypt']);
+  return de64(await crypto.subtle.decrypt({name:'AES-GCM',iv:b64(e.iv)},key,b64(e.ct)))}
+function erroLogin(t){var er=document.getElementById('f-erro');er.textContent=t;er.hidden=false;var b=document.querySelector('#f [type=submit]');b.disabled=false;b.textContent='Entrar'}
+async function entrar(login,senha){var n=normLogin(login),b=document.querySelector('#f [type=submit]');document.getElementById('f-erro').hidden=true;
+  if(!n)return erroLogin('Digite seu celular com DDD ou seu login.');if(!senha)return erroLogin('Digite sua senha.');b.disabled=true;b.textContent='Entrando...';
+  try{var r=await fetch('d/'+(await sha('wos-login:'+n))+'.json?t='+Date.now());}catch(e){return erroLogin('Sem conexão. Tente de novo.')}
+  if(!r.ok)return erroLogin(n.slice(0,4)==='tel:'?'Não achamos esse celular. Use o número que você usa no grupo.':'Não achamos esse login. Tente com o seu celular.');
+  var j=await r.json(),k=null,tipo='';
+  for(var i=0;i<j.e.length&&!k;i++){var e=j.e[i],s=(e.t==='p'||e.t==='t')?normSenha(senha):e.t==='c'?normCod(senha):senha;
+    try{k=await desembrulhar(s,e);tipo=e.t}catch(x){}}
+  if(!k)return erroLogin('Senha incorreta. Se esqueceu, toque em "Esqueci minha senha".');
+  S={arq:j.arq,k:k,t:tipo};PADRAO=senha;ls('mb-sessao',JSON.stringify(S));abrir()}
+async function abrir(){var o=document.getElementById('out');o.innerHTML='<p class="msg">Abrindo sua box...</p>';document.getElementById('entrar').hidden=true;
+  try{var r=await fetch('b/'+S.arq+'.json?t='+Date.now());if(!r.ok)throw 0;var j=await r.json();
+    var key=await crypto.subtle.importKey('raw',b64(S.k),'AES-GCM',false,['decrypt']);
+    D=JSON.parse(new TextDecoder().decode(await crypto.subtle.decrypt({name:'AES-GCM',iv:b64(j.iv)},key,b64(j.ct))));COD=S.arq.slice(0,12);
+    CONTA=S.t!=='s'&&!ls('mb-conta-'+COD)&&!ls('mb-depois-'+COD);
+    FORM=!CONTA&&precisaDados();tela();
+  }catch(e){o.innerHTML='<p class="msg">Sua box está sendo preparada. Tente de novo em alguns minutos.</p><p class="msg"><button class="sem" data-sair>Sair</button></p>'}}
+function precisaDados(){return !D.dados.confirmado&&!ls('mb-dados-'+COD)&&!ls('mb-pular-'+COD)}
+function sair(){ls('mb-sessao',null);location.reload()}
+async function esqueci(){var v=document.getElementById('lge').value,er=document.getElementById('fe-erro'),b=document.querySelector('#fe [type=submit]');
+  if(!normLogin(v)){er.textContent='Digite seu celular com DDD ou seu login.';er.hidden=false;return}b.disabled=true;b.textContent='Enviando...';
+  try{await enviar({acao:'esqueci',login:v});document.getElementById('fe').innerHTML='<h2>Pedido enviado</h2><p class="fraco">Se esse login existir, a senha temporária chega no WhatsApp cadastrado em até 10 minutos. Ela vale por 24 horas.</p><button class="pri" type="button" data-voltar>Voltar para o login</button>'}
+  catch(e){er.textContent='Não consegui enviar agora. Tente de novo em instantes.';er.hidden=false;b.disabled=false;b.textContent='Receber senha no WhatsApp'}}
+/* ---------- minha conta ---------- */
+function sugestao(){var p=String(D.nomeCompleto||'').trim().split(/\s+/);return p.length>1?p[0]+' '+p[p.length-1]:''}
+function tConta(){var prim=S.t!=='s';
+  return '<div class="bloco"><h2>'+(prim?'Crie seu acesso':'Minha conta')+'</h2><p class="fraco peq">'+(prim?'Troque a senha por uma só sua. Se quiser, crie também um login mais fácil de lembrar, como seu nome e sobrenome. O celular continua valendo como login.':'Mude seu login ou sua senha. O celular continua valendo como login.')+'</p>'+
+  '<form id="fc" class="campos" novalidate><label class="l2">Login novo (opcional)<input name="login" autocapitalize="none" autocomplete="username" placeholder="'+esc(sugestao()||'nome sobrenome')+'" value="'+esc(D.login||'')+'"></label>'+
+  '<label>Senha nova<input name="senha" type="password" autocomplete="new-password" placeholder="mínimo 6 caracteres"></label><label>Repita a senha<input name="senha2" type="password" autocomplete="new-password"></label>'+
+  '<p class="erro l2" id="fc-erro" hidden></p><button class="pri l2" type="submit">Salvar acesso</button><button class="sem l2" type="button" data-depois>'+(prim?'Agora não':'Voltar')+'</button></form></div>'}
+async function salvarConta(f){var er=document.getElementById('fc-erro'),lg=f.elements.login.value.trim(),s1=f.elements.senha.value,s2=f.elements.senha2.value,b=f.querySelector('[type=submit]');
+  var falha=function(t){er.textContent=t;er.hidden=false;b.disabled=false;b.textContent='Salvar acesso'};er.hidden=true;
+  if(normLogin(lg)===normLogin(D.login||''))lg='';if(!lg&&!s1)return falha('Preencha um login novo ou uma senha nova.');
+  if(lg){var n=normLogin(lg);if(n.slice(0,2)!=='u:'||n.length<5)return falha('O login precisa ter pelo menos 3 letras (ex.: nome e sobrenome).')}
+  if(S.t!=='s'&&!s1)return falha('Crie uma senha nova para trocar a senha padrão.');
+  if(s1){if(s1.length<6)return falha('A senha precisa ter pelo menos 6 caracteres.');if(s1!==s2)return falha('As duas senhas não estão iguais.');
+    if(S.t!=='s'&&PADRAO&&normSenha(s1)===normSenha(PADRAO))return falha('Escolha uma senha diferente da senha atual.')}
+  b.disabled=true;b.textContent='Conferindo...';
+  if(lg){try{var r=await fetch('d/'+(await sha('wos-login:'+normLogin(lg)))+'.json?t='+Date.now());if(r.ok){var j=await r.json();if(j.arq!==S.arq)return falha('Esse login já está em uso. Tente outro.')}}catch(e){}}
+  try{await enviar({acao:'conta',login:lg,senha:s1});ls('mb-conta-'+COD,String(Date.now()));if(s1){S.t='s';ls('mb-sessao',JSON.stringify(S))}if(lg)D.login=lg;CONTA=false;
+    FORM=precisaDados();tela();
+    document.getElementById('out').insertAdjacentHTML('afterbegin','<div class="faixa"><p><b>Acesso salvo.</b> <span class="fraco">'+(lg&&s1?'O login e a senha novos passam':lg?'O login novo passa':'A senha nova passa')+' a valer em até 10 minutos.</span></p></div>')}
+  catch(e){falha('Não consegui salvar agora. Tente de novo em instantes.')}}
 var SIT={a_pagar:['Aguardando pagamento','t-atrasado'],a_chegar:['A caminho do estoque','t-novo'],disponivel:['Pronto para envio','t-pago'],preparando:['Preparando o envio','t-cobrado'],enviado:['Enviado','t-cobrado'],entregue:['Entregue','t-pago']};
 var ROT=['Pedido','Pago','Chegou','Enviado','Entregue'];
 function tag(s){return '<span class="tag '+s[1]+'"><i></i>'+esc(s[0])+'</span>'}
@@ -143,12 +192,12 @@ function secFrete(){var f=D.frete,h='<div class="bloco"><div class="cab"><h2>Env
       '<div class="preco"><span>Cartão à vista <b class="num">'+brl(o.cartao)+'</b></span>'+(o.link_cartao?'<a class="btn" target="_blank" rel="noopener" href="'+esc(o.link_cartao)+'">Pagar</a>':'')+'</div>'+
       '<div class="preco"><span>Cartão em até '+o.parcelas+'x <b class="num">'+brl(o.parcelado)+'</b> <span class="fraco peq">('+o.parcelas+'x de '+brl(o.parcelado/o.parcelas)+')</span></span>'+(o.link_parcelado?'<a class="btn" target="_blank" rel="noopener" href="'+esc(o.link_parcelado)+'">Pagar</a>':'')+'</div>'+
       (!o.link_pix&&CONF.pix?'<details><summary>Pagar no Pix pela chave</summary>'+blocoPix(o.pix,o.servico,g.tipo)+'</details>':'')+
-      (!o.link_cartao&&CONF.whats?'<a class="peq" target="_blank" rel="noopener" href="'+esc(wa('Olá! Quero pagar o frete '+o.servico+' ('+g.nome+') da Minha Box no cartão. Código #'+COD))+'">Pedir link do cartão</a>':'')+'</div>'})});
+      (!o.link_cartao&&CONF.whats?'<a class="peq" target="_blank" rel="noopener" href="'+esc(wa('Olá! Quero pagar o frete '+o.servico+' ('+g.nome+') da Minha Box no cartão. ('+D.nome+')'))+'">Pedir link do cartão</a>':'')+'</div>'})});
   return h+'<p class="peq fraco">Pago o frete, a etiqueta é gerada e o rastreio aparece aqui.</p></div>'}
 function tBox(){var it=D.itens,g=function(s){return it.filter(function(x){return s.indexOf(x.situacao)>=0})},h=aviso();
   if(D.aberto.valor>0)h+='<div class="bloco"><h2>Em aberto · <span class="num">'+brl(D.aberto.valor)+'</span></h2>'+g(['a_pagar']).map(item).join('')+
     (D.aberto.link?'<a class="btn pri cheio" target="_blank" rel="noopener" href="'+esc(D.aberto.link)+'">Pagar '+brl(D.aberto.valor)+' · Pix ou até '+CONF.parcelas+'x sem juros</a>':
-     (CONF.pix?'<p class="peq fraco">Chave Pix'+(CONF.titular?' ('+esc(CONF.titular)+')':'')+'</p><div class="pix">'+esc(CONF.pix)+'</div>':'')+(CONF.whats?'<a class="btn cheio" target="_blank" rel="noopener" href="'+esc(wa('Olá! Paguei '+brl(D.aberto.valor)+' dos itens da minha box. Código #'+COD))+'">Mandar comprovante no WhatsApp</a>':''))+'</div>';
+     (CONF.pix?'<p class="peq fraco">Chave Pix'+(CONF.titular?' ('+esc(CONF.titular)+')':'')+'</p><div class="pix">'+esc(CONF.pix)+'</div>':'')+(CONF.whats?'<a class="btn cheio" target="_blank" rel="noopener" href="'+esc(wa('Olá! Paguei '+brl(D.aberto.valor)+' dos itens da minha box. ('+D.nome+')'))+'">Mandar comprovante no WhatsApp</a>':''))+'</div>';
   var pr=g(['disponivel','preparando']);if(pr.length)h+='<div class="bloco"><h2>Pronto para envio · '+pr.length+'</h2>'+pr.map(item).join('')+'</div>';
   h+=secFrete();
   var ac=g(['a_chegar']);if(ac.length)h+='<div class="bloco"><h2>A caminho · '+ac.length+'</h2><p class="peq fraco">Já é seu: assim que chegar ao nosso estoque, libera para envio.</p>'+ac.map(item).join('')+'</div>';
@@ -170,17 +219,24 @@ function tAberturas(){if(!D.aberturas.length)return '<div class="bloco"><p class
     return '<div class="bloco"><div class="cab"><h3>'+esc(a.perfume)+'</h3>'+(a.jaTem?'<span class="tag">Você já provou</span>':'')+'</div>'+(a.motivo?'<p class="peq fraco">'+esc(a.motivo)+'</p>':'')+
     (a.notas.length?chips(a.notas):'')+(a.precos.length?'<p class="peq num">'+a.precos.map(function(p){return esc(p[0])+' '+brl(p[1])}).join(' · ')+'</p>':'')+'<p class="peq fraco">Peça no grupo do WhatsApp.</p></div>'}).join('')}
 function tela(){var o=document.getElementById('out');
-  if(FORM){o.innerHTML='<p class="ola">Olá, '+esc(D.nome)+'!</p>'+tDados();var f=document.getElementById('fd');f.onsubmit=function(e){e.preventDefault();salvarDados(f)};f.elements.cep.onchange=function(){buscaCep(this.value)};return}
+  if(CONTA){o.innerHTML='<p class="ola">Olá, '+esc(D.nome)+'!</p><div class="topo"><button class="sem" data-sair>Sair</button></div>'+tConta();var fc=document.getElementById('fc');fc.onsubmit=function(e){e.preventDefault();salvarConta(fc)};return}
+  if(FORM){o.innerHTML='<p class="ola">Olá, '+esc(D.nome)+'!</p><div class="topo"><button class="sem" data-sair>Sair</button></div>'+tDados();var f=document.getElementById('fd');f.onsubmit=function(e){e.preventDefault();salvarDados(f)};f.elements.cep.onchange=function(){buscaCep(this.value)};return}
   var abas=[['box','Minha box'],['colecao','Coleção'],['perfil','Perfil olfativo'],['aberturas','Aberturas']];
-  var h='<p class="ola">Olá, '+esc(D.nome)+'!</p><p class="atualizado">Atualizado em '+esc(D.atualizado||'')+'</p><div class="abas" role="tablist">'+abas.map(function(a){return '<button class="aba" role="tab" aria-selected="'+(ABA===a[0])+'" data-aba="'+a[0]+'">'+a[1]+'</button>'}).join('')+'</div>';
+  var h='<p class="ola">Olá, '+esc(D.nome)+'!</p><p class="atualizado">Atualizado em '+esc(D.atualizado||'')+'</p><div class="topo"><button class="sem" data-conta>Minha conta</button><button class="sem" data-sair>Sair</button></div><div class="abas" role="tablist">'+abas.map(function(a){return '<button class="aba" role="tab" aria-selected="'+(ABA===a[0])+'" data-aba="'+a[0]+'">'+a[1]+'</button>'}).join('')+'</div>';
   o.innerHTML=h+(ABA==='colecao'?tColecao():ABA==='perfil'?tPerfil():ABA==='aberturas'?tAberturas():tBox())}
-document.addEventListener('click',async function(e){var t=e.target.closest('[data-aba],[data-dados],[data-fechar],[data-pular],[data-pix]');if(!t)return;
+document.addEventListener('click',async function(e){var t=e.target.closest('[data-aba],[data-dados],[data-fechar],[data-pular],[data-pix],[data-conta],[data-sair],[data-depois],[data-esqueci],[data-voltar]');if(!t)return;
+  if(t.hasAttribute('data-sair'))return sair();
+  if(t.hasAttribute('data-esqueci')){document.getElementById('f').hidden=true;document.getElementById('fe').hidden=false;document.getElementById('lge').value=document.getElementById('lg').value;return}
+  if(t.hasAttribute('data-voltar')){location.reload();return}
+  if(t.hasAttribute('data-conta')){CONTA=true;FORM=false;tela();window.scrollTo(0,0);return}
+  if(t.hasAttribute('data-depois')){if(S.t!=='s')ls('mb-depois-'+COD,'1');CONTA=false;FORM=precisaDados();tela();return}
   if(t.dataset.aba){ABA=t.dataset.aba;tela();window.scrollTo(0,0)}
   else if(t.hasAttribute('data-dados')){FORM=true;tela();window.scrollTo(0,0)}
   else if(t.hasAttribute('data-fechar')){FORM=false;tela()}
   else if(t.hasAttribute('data-pular')){ls('mb-pular-'+COD,'1');FORM=false;tela()}
   else if(t.dataset.pix){t.disabled=true;t.textContent='Avisando...';try{await enviar({acao:'pix_frete',servico:t.dataset.pix,tipo:t.dataset.tipo});ls('mb-pix-'+COD,String(Date.now()));tela();
-    if(CONF.whats)window.open(wa('Olá! Paguei o frete '+t.dataset.pix+' da Minha Box no Pix ('+brl(t.dataset.valor)+'). Segue o comprovante. Código #'+COD),'_blank','noopener')}catch(x){t.disabled=false;t.textContent='Não consegui avisar. Tente de novo.'}}});
-document.getElementById('f').onsubmit=function(ev){ev.preventDefault();var v=document.getElementById('c').value;if(v)abrir(v)};
-var h0=decodeURIComponent(location.hash.slice(1));if(h0){document.getElementById('c').value=h0;abrir(h0)}
+    if(CONF.whats)window.open(wa('Olá! Paguei o frete '+t.dataset.pix+' da Minha Box no Pix ('+brl(t.dataset.valor)+'). Segue o comprovante. ('+D.nome+')'),'_blank','noopener')}catch(x){t.disabled=false;t.textContent='Não consegui avisar. Tente de novo.'}}});
+document.getElementById('f').onsubmit=function(ev){ev.preventDefault();entrar(document.getElementById('lg').value,document.getElementById('sn').value)};
+document.getElementById('fe').onsubmit=function(ev){ev.preventDefault();esqueci()};
+try{S=JSON.parse(ls('mb-sessao')||'null')}catch(e){S=null}if(S&&S.arq&&S.k)abrir();else S=null;
 </script></main></body></html>
