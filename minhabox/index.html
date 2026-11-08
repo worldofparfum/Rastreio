@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Minha Box · World of Splits</title><meta name="robots" content="noindex"><meta name="theme-color" content="#0F1013">
+<style>
+@font-face{font-family:"Cinzel";src:url("Cinzel.ttf") format("truetype");font-weight:400 900;font-display:swap}
+:root{--bg:#0F1013;--panel:#17181D;--panel2:#1E2026;--line:#2D2A24;--ink:#EEE8DA;--ink2:#A59F91;
+  --acc:#C9A24A;--acc-ink:#15130E;--acc-soft:rgba(201,162,74,.13);
+  --ouro:linear-gradient(135deg,#7A5418 0%,#F2D27E 28%,#C8963A 52%,#FFE7A3 72%,#9A6A1E 100%);
+  --pago:#6FCB94;--cobrado:#E3B353;--atrasado:#EC806D;--novo:#86A9E8;
+  --pago-bg:#1B2D23;--cobrado-bg:#33291A;--atrasado-bg:#38201B;--novo-bg:#1D2638;
+  --r1:6px;--r2:10px;--r3:16px;--f-d:"Cinzel",Georgia,serif;--f-b:"Onest",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;color-scheme:dark}
+*{box-sizing:border-box}[hidden]{display:none!important}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;min-height:100vh;color:var(--ink);font:15px/1.5 var(--f-b);-webkit-font-smoothing:antialiased;
+  background:radial-gradient(1200px 600px at 70% -10%,rgba(201,162,74,.08),transparent 60%),var(--bg)}
+main{max-width:660px;margin:0 auto;padding:28px 16px 64px}
+h1,h2,h3{margin:0;font-weight:400;line-height:1.15}
+h1{font-family:var(--f-d);font-size:clamp(28px,7vw,36px);text-align:center;background:var(--ouro);-webkit-background-clip:text;background-clip:text;color:transparent}
+h2{font-family:var(--f-d);font-size:20px}h3{font:600 15px/1.3 var(--f-b)}
+p{margin:0}a{color:var(--acc)}
+.num{font-variant-numeric:tabular-nums}.fraco{color:var(--ink2)}.peq{font-size:13px}
+.logo{display:block;width:84px;height:84px;margin:0 auto 12px;border-radius:50%;box-shadow:0 0 30px rgba(201,162,74,.35)}
+.sub{color:var(--ink2);text-align:center;margin:6px 0 22px;font-size:14px}
+.bloco{background:var(--panel);border:1px solid var(--line);border-radius:var(--r3);padding:18px;margin-top:12px;display:flex;flex-direction:column;gap:12px}
+.cab{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap}
+button,.btn{font:600 14px/1 var(--f-b);padding:12px 16px;min-height:44px;border-radius:var(--r2);border:1px solid var(--line);background:var(--panel2);color:var(--ink);cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:7px;text-decoration:none;text-align:center}
+.pri{background:var(--ouro);border-color:#B88A36;color:#1A140A;text-shadow:0 1px 0 rgba(255,240,200,.4)}
+.sem{background:transparent;border-color:transparent;color:var(--ink2)}
+.cheio{width:100%}
+input,select{font:inherit;font-size:16px;color:var(--ink);background:#121317;border:1px solid #2F2C25;border-radius:var(--r2);padding:11px 12px;width:100%;min-width:0}
+input:focus,select:focus{border-color:var(--acc);outline:none}
+label{display:flex;flex-direction:column;gap:6px;font-size:13px;color:var(--ink2)}
+.campos{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.campos .l2{grid-column:1/-1}
+form.entrar{display:flex;gap:8px}form.entrar input{text-transform:uppercase;letter-spacing:.12em}
+.ola{font-family:var(--f-d);font-size:22px;text-align:center}.atualizado{color:var(--ink2);text-align:center;font-size:13px;margin:4px 0 16px}
+.abas{display:flex;gap:6px;overflow-x:auto;margin:0 -16px 6px;padding:2px 16px;scrollbar-width:none}.abas::-webkit-scrollbar{display:none}
+.aba{flex:none;border-radius:999px;padding:9px 15px;min-height:40px;font-weight:600;font-size:14px;background:var(--panel);border:1px solid var(--line);color:var(--ink2)}
+.aba[aria-selected=true]{background:var(--ouro);border-color:#B88A36;color:#1A140A}
+.tag{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:600;padding:3px 9px;border-radius:999px;white-space:nowrap;background:var(--panel2);color:var(--ink2)}
+.tag i{width:7px;height:7px;border-radius:50%;background:currentColor}
+.t-pago{background:var(--pago-bg);color:var(--pago)}.t-cobrado{background:var(--cobrado-bg);color:var(--cobrado)}.t-atrasado{background:var(--atrasado-bg);color:var(--atrasado)}.t-novo{background:var(--novo-bg);color:var(--novo)}
+.item{border-top:1px solid var(--line);padding-top:12px}.item:first-of-type{border-top:0;padding-top:0}
+.item .cab b{font-weight:600}
+.passos{display:flex;gap:4px;margin-top:9px}.passos i{flex:1;height:4px;border-radius:4px;background:#2A2B31}.passos i.f{background:var(--acc)}
+.rot{display:flex;justify-content:space-between;font-size:11px;color:var(--ink2);margin-top:4px}
+.numeros{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}
+.numeros div{background:var(--panel);border:1px solid var(--line);border-radius:var(--r3);padding:14px 8px;text-align:center}
+.numeros b{display:block;font-family:var(--f-d);font-size:24px;font-weight:400;color:var(--acc)}.numeros span{font-size:12px;color:var(--ink2)}
+.opc{border:1px solid var(--line);border-radius:var(--r2);padding:12px;background:var(--panel2);display:flex;flex-direction:column;gap:10px}
+.preco{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}.preco .btn{min-height:40px;padding:9px 14px}
+.chips{display:flex;flex-wrap:wrap;gap:6px}.chip{font-size:13px;padding:5px 11px;border-radius:999px;background:var(--panel2);border:1px solid var(--line)}
+.faixa{border-radius:var(--r3);padding:14px 16px;background:linear-gradient(120deg,rgba(201,162,74,.16),rgba(201,162,74,.04));border:1px solid rgba(201,162,74,.45);margin-top:12px}
+.msg{color:var(--ink2);text-align:center;margin-top:18px}
+.pix{word-break:break-all;background:#121317;border:1px solid var(--line);border-radius:var(--r2);padding:10px;font-family:ui-monospace,Menlo,monospace;font-size:14px}
+.erro{color:var(--atrasado);font-size:13px}
+details summary{cursor:pointer;color:var(--acc);font-size:13px}
+ul.lista{margin:0;padding-left:18px;color:var(--ink2);font-size:14px}
+@media (max-width:420px){.campos{grid-template-columns:1fr}}
+@media (prefers-reduced-motion:no-preference){.bloco{animation:sobe .25s ease both}@keyframes sobe{from{opacity:0;transform:translateY(6px)}}}
+</style></head><body><main>
+<img class="logo" src="../logo.png" alt="" onerror="this.remove()"><h1>Minha Box</h1><p class="sub">World of Splits</p>
+<div id="entrar"><p class="sub" style="margin-top:-12px">Digite o código de acesso que mandamos no WhatsApp.</p>
+<form class="entrar" id="f"><input id="c" placeholder="ABCD-1234" autocomplete="off" aria-label="Código de acesso"><button class="pri">Entrar</button></form></div>
+<div id="out" aria-live="polite"></div>
+<script>
+var CONF={"empresa": "World of Splits", "whats": "", "pix": "739c3c17-3a05-40b0-8a88-051d0d14bf86", "titular": "", "parcelas": 6, "tipos": {"split": "Decants", "apc": "APC (frasco)"}, "pub": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAwle4XlfzCajKFOuz5CDnvr2W5p9vcIiO9HXdf0bz81ocWUEvmtz+L6zspQDRCN4i1112frLUA4Lco+OgGRS2GisVrj6haX4iDk4XW+B0E98BnJbJqSZm1LNtfA6iv7jUDSDK94EAnpYOr6dgzEP8GuakH+gzf2c2AyteVe2WkIAjl3p/t4SDM6Rs/VX0nxLCSsAM6bwviT1p9cf9xWoQLcfWP4XSmby7TFJ/J9vnYiOlJ3VEIqQj0fHHPjWyPaxjykG2IoLTgwUsH5+xptlrPvnaDDrMCUDP3S5oHTsPRsgVcfYLuWhwR9yfOLWqBO9zRgnjw/tHrlTXqsR8zJpmVQIDAQAB", "topico": "wos-mb-6k4fCQue2e3TxSeAGw2C4q3yVvOaum"};var D=null,COD='',ABA='box',FORM=false;
+function norm(c){return String(c||'').toUpperCase().replace(/[^A-Z0-9]/g,'')}
+function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+function brl(v){return 'R$ '+Number(v||0).toFixed(2).replace('.',',').replace(/\B(?=(\d{3})+(?!\d))/g,'.')}
+function ml(v){v=Number(v||0);return (v%1?String(v).replace('.',','):v)+'ml'}
+function b64(s){return Uint8Array.from(atob(s),function(c){return c.charCodeAt(0)})}
+function de64(u){var s='';new Uint8Array(u).forEach(function(b){s+=String.fromCharCode(b)});return btoa(s)}
+function ls(k,v){try{if(v===undefined)return localStorage.getItem(k);if(v===null)localStorage.removeItem(k);else localStorage.setItem(k,v)}catch(e){return null}}
+async function sha(t){var h=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(t));return Array.from(new Uint8Array(h)).map(function(b){return b.toString(16).padStart(2,'0')}).join('').slice(0,32)}
+function wa(txt){return CONF.whats?'https://wa.me/'+CONF.whats+'?text='+encodeURIComponent(txt):''}
+async function enviar(obj){ /* criptografa para o programa e entrega pelo canal privado */
+  var pub=await crypto.subtle.importKey('spki',b64(CONF.pub),{name:'RSA-OAEP',hash:'SHA-256'},false,['encrypt']);
+  var k=crypto.getRandomValues(new Uint8Array(32)),iv=crypto.getRandomValues(new Uint8Array(12));
+  var ak=await crypto.subtle.importKey('raw',k,'AES-GCM',false,['encrypt']);
+  var ct=await crypto.subtle.encrypt({name:'AES-GCM',iv:iv},ak,new TextEncoder().encode(JSON.stringify(Object.assign({cod:COD,ts:Date.now()},obj))));
+  var wk=await crypto.subtle.encrypt({name:'RSA-OAEP'},pub,k);
+  var r=await fetch('https://ntfy.sh/'+CONF.topico,{method:'POST',body:JSON.stringify({v:1,k:de64(wk),iv:de64(iv),ct:de64(ct)})});if(!r.ok)throw new Error('envio')}
+async function abrir(cod){var o=document.getElementById('out');o.innerHTML='<p class="msg">Abrindo sua box...</p>';var n=norm(cod);
+  try{var r=await fetch('d/'+(await sha('wos-box:'+n))+'.json?t='+Date.now());if(!r.ok)throw 0;var j=await r.json();
+    var k=await crypto.subtle.importKey('raw',new TextEncoder().encode(n),'PBKDF2',false,['deriveKey']);
+    var key=await crypto.subtle.deriveKey({name:'PBKDF2',salt:b64(j.sal),iterations:j.it,hash:'SHA-256'},k,{name:'AES-GCM',length:256},false,['decrypt']);
+    D=JSON.parse(new TextDecoder().decode(await crypto.subtle.decrypt({name:'AES-GCM',iv:b64(j.iv)},key,b64(j.ct))));COD=n.slice(0,4)+'-'+n.slice(4);
+    document.getElementById('entrar').hidden=true;try{history.replaceState(null,'','#'+cod)}catch(e){}
+    FORM=!D.dados.confirmado&&!ls('mb-dados-'+COD)&&!ls('mb-pular-'+COD);tela();
+  }catch(e){o.innerHTML='<p class="msg">Código não encontrado. Confira o código que mandamos no WhatsApp.</p>'}}
+var SIT={a_pagar:['Aguardando pagamento','t-atrasado'],a_chegar:['A caminho do estoque','t-novo'],disponivel:['Pronto para envio','t-pago'],preparando:['Preparando o envio','t-cobrado'],enviado:['Enviado','t-cobrado'],entregue:['Entregue','t-pago']};
+var ROT=['Pedido','Pago','Chegou','Enviado','Entregue'];
+function tag(s){return '<span class="tag '+s[1]+'"><i></i>'+esc(s[0])+'</span>'}
+function item(x){var s=SIT[x.situacao]||[x.situacao,''];return '<div class="item"><div class="cab"><b>'+esc(x.perfume)+'</b>'+tag(s)+'</div>'+
+  '<p class="peq fraco">'+esc(x.tipo)+' · '+ml(x.ml)+(x.valor?' · <span class="num">'+brl(x.valor)+'</span>':'')+(x.previsao?' · previsão '+esc(x.previsao):'')+(x.enviadoEm?' · enviado '+esc(x.enviadoEm):'')+(x.rastreio?' · <b>'+esc(x.rastreio)+'</b>':'')+'</p>'+
+  '<div class="passos" aria-hidden="true">'+ROT.map(function(r,j){return '<i class="'+(j<=x.etapa?'f':'')+'"></i>'}).join('')+'</div><div class="rot" aria-hidden="true">'+ROT.map(function(r){return '<span>'+r+'</span>'}).join('')+'</div></div>'}
+/* ---------- dados de entrega ---------- */
+function tDados(){var d=D.dados,v=function(k){return esc(d[k]||'')};
+  return '<div class="bloco"><h2>Seus dados de entrega</h2><p class="fraco peq">'+(d.confirmado?'Confira e atualize se for mandar para outro lugar.':'Antes de tudo, confirme para onde enviamos sua box. Usamos esses dados só para gerar a etiqueta dos Correios.')+'</p>'+
+  '<form id="fd" class="campos" novalidate>'+
+  '<label class="l2">Nome completo de quem recebe<input name="nome" autocomplete="name" required value="'+v('nome')+'"></label>'+
+  '<label>CPF de quem recebe<input name="cpf" inputmode="numeric" autocomplete="off" placeholder="'+(d.cpf||'000.000.000-00')+'"></label>'+
+  '<label>Celular<input name="telefone" inputmode="tel" autocomplete="tel" value="'+v('telefone')+'"></label>'+
+  '<label class="l2">CEP<input name="cep" inputmode="numeric" autocomplete="postal-code" value="'+v('cep')+'"></label>'+
+  '<label class="l2">Rua<input name="rua" autocomplete="address-line1" value="'+v('rua')+'"></label>'+
+  '<label>Número<input name="numero" value="'+v('numero')+'"></label>'+
+  '<label>Complemento<input name="complemento" placeholder="Apto, bloco..." value="'+v('complemento')+'"></label>'+
+  '<label>Bairro<input name="bairro" value="'+v('bairro')+'"></label>'+
+  '<label>Cidade<input name="cidade" autocomplete="address-level2" value="'+v('cidade')+'"></label>'+
+  '<label>UF<input name="uf" maxlength="2" autocomplete="address-level1" value="'+v('uf')+'"></label>'+
+  '<p class="erro l2" id="fd-erro" hidden></p>'+
+  '<button class="pri l2" type="submit">Salvar dados</button>'+(d.confirmado||!FORM?'<button class="sem l2" type="button" data-fechar>Voltar</button>':'<button class="sem l2" type="button" data-pular>Agora não</button>')+'</form></div>'}
+function cpfOk(c){c=c.replace(/\D/g,'');if(c.length!==11||/^(\d)\1+$/.test(c))return false;for(var n=9;n<11;n++){var s=0;for(var i=0;i<n;i++)s+=c[i]*(n+1-i);if((s*10%11)%10!=c[n])return false}return true}
+async function salvarDados(f){var d={};new FormData(f).forEach(function(v,k){d[k]=String(v).trim()});var er=document.getElementById('fd-erro');
+  var falta=['nome','rua','numero','bairro','cidade','uf'].filter(function(k){return !d[k]});
+  if(d.cep.replace(/\D/g,'').length!==8){er.textContent='Confira o CEP.';er.hidden=false;return}
+  if(!cpfOk(d.cpf)){er.textContent='Confira o CPF: ele é obrigatório para a etiqueta dos Correios.';er.hidden=false;return}
+  if(falta.length){er.textContent='Preencha todos os campos de endereço.';er.hidden=false;return}
+  var b=f.querySelector('[type=submit]');b.disabled=true;b.textContent='Enviando...';
+  try{await enviar({acao:'dados',dados:d});ls('mb-dados-'+COD,String(Date.now()));FORM=false;ABA='box';tela();
+  }catch(e){er.textContent='Não consegui enviar agora. Tente de novo em instantes.';er.hidden=false;b.disabled=false;b.textContent='Salvar dados'}}
+async function buscaCep(cep){cep=cep.replace(/\D/g,'');if(cep.length!==8)return;try{var r=await (await fetch('https://viacep.com.br/ws/'+cep+'/json/')).json();if(r.erro)return;
+  var f=document.getElementById('fd');[['rua','logradouro'],['bairro','bairro'],['cidade','localidade'],['uf','uf']].forEach(function(p){if(r[p[1]])f.elements[p[0]].value=r[p[1]]});f.elements.numero.focus()}catch(e){}}
+/* ---------- box e envio ---------- */
+function aviso(){var t=ls('mb-dados-'+COD);if(!t||D.dados.confirmado&&Date.now()-t>36e5)return '';
+  return Date.now()-t<36e5?'<div class="faixa"><p><b>Recebemos seus dados.</b> <span class="fraco">O frete para o endereço novo aparece aqui em até 20 minutos.</span></p></div>':''}
+function blocoPix(valor,serv,tipo){if(!CONF.pix)return '';return '<p class="peq fraco">Chave Pix'+(CONF.titular?' ('+esc(CONF.titular)+')':'')+'</p><div class="pix">'+esc(CONF.pix)+'</div>'+
+  '<button class="cheio" data-pix="'+esc(serv)+'" data-tipo="'+esc(tipo)+'" data-valor="'+valor+'">Já paguei '+brl(valor)+'</button>'}
+function secFrete(){var f=D.frete,h='<div class="bloco"><div class="cab"><h2>Enviar agora</h2>'+(D.dados.confirmado?'<button class="sem" data-dados style="min-height:32px;padding:6px 8px">Outro endereço</button>':'')+'</div>';
+  if(f.motivo==='debito')return h+'<p class="fraco">Para liberar o envio, falta quitar '+brl(D.aberto.valor)+' em aberto.</p></div>';
+  var enviou=ls('mb-dados-'+COD)&&Date.now()-ls('mb-dados-'+COD)<36e5;
+  if(enviou&&(f.motivo==='endereco'||!D.dados.confirmado))return h+'<p class="fraco">Recebemos seus dados. O frete para esse endereço aparece aqui em até 20 minutos.</p></div>';
+  if(f.motivo==='endereco'||(!D.dados.confirmado&&f.pode))return h+'<p class="fraco">Para calcular o frete e gerar a etiqueta, precisamos dos seus dados de entrega.</p><button class="pri" data-dados>Preencher dados de entrega</button></div>';
+  if(f.motivo==='preparando')return h+'<p class="fraco">Seu envio já está sendo preparado. O rastreio aparece aqui assim que sair.</p></div>';
+  if(f.motivo==='cotando')return h+'<p class="fraco">Estamos calculando o frete. Volte em alguns minutos.</p></div>';
+  if(!f.pode)return '';
+  if(ls('mb-pix-'+COD)&&Date.now()-ls('mb-pix-'+COD)<864e5)return h+'<p class="fraco">Recebemos seu aviso de pagamento. Assim que conferirmos o Pix, a etiqueta é gerada e o rastreio aparece aqui.</p></div>';
+  h+='<p class="peq fraco">Entrega para '+esc(D.dados.nome)+' · '+esc(f.endereco)+'</p>';
+  f.grupos.forEach(function(g){h+='<h3>'+esc(g.nome)+' <span class="fraco peq">· '+g.itens+' ite'+(g.itens>1?'ns':'m')+' · seguro de '+brl(g.seguro)+'</span></h3>';
+    g.opcoes.forEach(function(o){
+      h+='<div class="opc"><div class="cab"><b>'+esc(o.servico)+'</b><span class="fraco peq">'+esc(o.prazo)+'</span></div>'+
+      '<div class="preco"><span>Pix <b class="num">'+brl(o.pix)+'</b></span>'+(o.link_pix?'<a class="btn pri" target="_blank" rel="noopener" href="'+esc(o.link_pix)+'">Pagar no Pix</a>':'')+'</div>'+
+      '<div class="preco"><span>Cartão à vista <b class="num">'+brl(o.cartao)+'</b></span>'+(o.link_cartao?'<a class="btn" target="_blank" rel="noopener" href="'+esc(o.link_cartao)+'">Pagar</a>':'')+'</div>'+
+      '<div class="preco"><span>Cartão em até '+o.parcelas+'x <b class="num">'+brl(o.parcelado)+'</b> <span class="fraco peq">('+o.parcelas+'x de '+brl(o.parcelado/o.parcelas)+')</span></span>'+(o.link_parcelado?'<a class="btn" target="_blank" rel="noopener" href="'+esc(o.link_parcelado)+'">Pagar</a>':'')+'</div>'+
+      (!o.link_pix&&CONF.pix?'<details><summary>Pagar no Pix pela chave</summary>'+blocoPix(o.pix,o.servico,g.tipo)+'</details>':'')+
+      (!o.link_cartao&&CONF.whats?'<a class="peq" target="_blank" rel="noopener" href="'+esc(wa('Olá! Quero pagar o frete '+o.servico+' ('+g.nome+') da Minha Box no cartão. Código #'+COD))+'">Pedir link do cartão</a>':'')+'</div>'})});
+  return h+'<p class="peq fraco">Pago o frete, a etiqueta é gerada e o rastreio aparece aqui.</p></div>'}
+function tBox(){var it=D.itens,g=function(s){return it.filter(function(x){return s.indexOf(x.situacao)>=0})},h=aviso();
+  if(D.aberto.valor>0)h+='<div class="bloco"><h2>Em aberto · <span class="num">'+brl(D.aberto.valor)+'</span></h2>'+g(['a_pagar']).map(item).join('')+
+    (D.aberto.link?'<a class="btn pri cheio" target="_blank" rel="noopener" href="'+esc(D.aberto.link)+'">Pagar '+brl(D.aberto.valor)+' · Pix ou até '+CONF.parcelas+'x sem juros</a>':
+     (CONF.pix?'<p class="peq fraco">Chave Pix'+(CONF.titular?' ('+esc(CONF.titular)+')':'')+'</p><div class="pix">'+esc(CONF.pix)+'</div>':'')+(CONF.whats?'<a class="btn cheio" target="_blank" rel="noopener" href="'+esc(wa('Olá! Paguei '+brl(D.aberto.valor)+' dos itens da minha box. Código #'+COD))+'">Mandar comprovante no WhatsApp</a>':''))+'</div>';
+  var pr=g(['disponivel','preparando']);if(pr.length)h+='<div class="bloco"><h2>Pronto para envio · '+pr.length+'</h2>'+pr.map(item).join('')+'</div>';
+  h+=secFrete();
+  var ac=g(['a_chegar']);if(ac.length)h+='<div class="bloco"><h2>A caminho · '+ac.length+'</h2><p class="peq fraco">Já é seu: assim que chegar ao nosso estoque, libera para envio.</p>'+ac.map(item).join('')+'</div>';
+  if(D.emSplit.length)h+='<div class="bloco"><h2>Em splits abertos</h2><p class="peq fraco">A cobrança vem quando o split fechar.</p><ul class="lista">'+D.emSplit.map(function(x){return '<li>'+esc(x.perfume)+' · '+ml(x.ml)+'</li>'}).join('')+'</ul></div>';
+  var en=g(['enviado','entregue']);if(en.length)h+='<div class="bloco"><h2>Já enviados · '+en.length+'</h2>'+en.slice().reverse().slice(0,15).map(item).join('')+(en.length>15?'<p class="peq fraco">Os outros estão na sua coleção.</p>':'')+'</div>';
+  if(D.rastreios.length)h+='<div class="bloco"><h2>Rastreios</h2>'+D.rastreios.map(function(r){return '<div class="item"><div class="cab"><b class="num">'+esc(r.rastreio)+'</b><a href="https://rastreamento.correios.com.br/app/index.php?objetos='+encodeURIComponent(r.rastreio)+'" target="_blank" rel="noopener">Ver nos Correios</a></div><p class="peq fraco">'+esc(r.servico)+(r.postadoEm?' · postado '+esc(r.postadoEm):'')+'</p></div>'}).join('')+'</div>';
+  return h||'<div class="bloco"><p class="fraco">Sua box está vazia por enquanto.</p></div>'}
+function chips(l){return '<div class="chips">'+l.map(function(x){return '<span class="chip">'+esc(x)+'</span>'}).join('')+'</div>'}
+function lista(t,l){return l&&l.length?'<div class="bloco"><h2>'+t+' · '+l.length+'</h2>'+chips(l)+'</div>':''}
+function tColecao(){var c=D.colecao;if(!c)return '<div class="bloco"><p class="fraco">Sua coleção aparece aqui depois das primeiras compras.</p></div>';
+  return '<div class="numeros"><div><b class="num">'+c.perfumes+'</b><span>perfumes</span></div><div><b class="num">'+Math.round(c.ml)+'</b><span>ml no total</span></div><div><b class="num">'+c.casas+'</b><span>casas</span></div></div>'+
+  (c.desde?'<p class="atualizado" style="margin-top:12px">Com a gente desde '+esc(c.desde)+'</p>':'')+lista('Seus favoritos',c.gosta)+lista('Quis conhecer melhor',c.interesse)+lista('Você provou',c.conhecer)}
+function tPerfil(){var p=D.perfil;if(!p)return '<div class="bloco"><p class="fraco">Seu perfil olfativo se forma com mais algumas compras.</p></div>';
+  var bl=function(t,l){return l&&l.length?'<h3>'+t+'</h3>'+chips(l):''};
+  return '<div class="bloco"><h2>Seu perfil olfativo</h2>'+(p.resumo?'<p>'+esc(p.resumo)+'</p>':'')+bl('Famílias',p.familias)+bl('Notas que mais aparecem',p.notas)+bl('Notas que você ama',p.ama)+bl('Casas preferidas',p.casas)+
+  (CONF.whats?'<a class="peq" target="_blank" rel="noopener" href="'+esc(wa('Olá! Vi meu perfil olfativo na Minha Box e queria ajustar uma coisa: '))+'">Não é bem você? Conta pra gente</a>':'')+'</div>'}
+function tAberturas(){if(!D.aberturas.length)return '<div class="bloco"><p class="fraco">Nenhum split aberto agora. Fique de olho no grupo!</p></div>';
+  return '<p class="atualizado">'+(D.combinam?'Splits abertos agora que combinam com o seu perfil.':'Splits abertos agora.')+'</p>'+D.aberturas.map(function(a){
+    return '<div class="bloco"><div class="cab"><h3>'+esc(a.perfume)+'</h3>'+(a.jaTem?'<span class="tag">Você já provou</span>':'')+'</div>'+(a.motivo?'<p class="peq fraco">'+esc(a.motivo)+'</p>':'')+
+    (a.notas.length?chips(a.notas):'')+(a.precos.length?'<p class="peq num">'+a.precos.map(function(p){return esc(p[0])+' '+brl(p[1])}).join(' · ')+'</p>':'')+'<p class="peq fraco">Peça no grupo do WhatsApp.</p></div>'}).join('')}
+function tela(){var o=document.getElementById('out');
+  if(FORM){o.innerHTML='<p class="ola">Olá, '+esc(D.nome)+'!</p>'+tDados();var f=document.getElementById('fd');f.onsubmit=function(e){e.preventDefault();salvarDados(f)};f.elements.cep.onchange=function(){buscaCep(this.value)};return}
+  var abas=[['box','Minha box'],['colecao','Coleção'],['perfil','Perfil olfativo'],['aberturas','Aberturas']];
+  var h='<p class="ola">Olá, '+esc(D.nome)+'!</p><p class="atualizado">Atualizado em '+esc(D.atualizado||'')+'</p><div class="abas" role="tablist">'+abas.map(function(a){return '<button class="aba" role="tab" aria-selected="'+(ABA===a[0])+'" data-aba="'+a[0]+'">'+a[1]+'</button>'}).join('')+'</div>';
+  o.innerHTML=h+(ABA==='colecao'?tColecao():ABA==='perfil'?tPerfil():ABA==='aberturas'?tAberturas():tBox())}
+document.addEventListener('click',async function(e){var t=e.target.closest('[data-aba],[data-dados],[data-fechar],[data-pular],[data-pix]');if(!t)return;
+  if(t.dataset.aba){ABA=t.dataset.aba;tela();window.scrollTo(0,0)}
+  else if(t.hasAttribute('data-dados')){FORM=true;tela();window.scrollTo(0,0)}
+  else if(t.hasAttribute('data-fechar')){FORM=false;tela()}
+  else if(t.hasAttribute('data-pular')){ls('mb-pular-'+COD,'1');FORM=false;tela()}
+  else if(t.dataset.pix){t.disabled=true;t.textContent='Avisando...';try{await enviar({acao:'pix_frete',servico:t.dataset.pix,tipo:t.dataset.tipo});ls('mb-pix-'+COD,String(Date.now()));tela();
+    if(CONF.whats)window.open(wa('Olá! Paguei o frete '+t.dataset.pix+' da Minha Box no Pix ('+brl(t.dataset.valor)+'). Segue o comprovante. Código #'+COD),'_blank','noopener')}catch(x){t.disabled=false;t.textContent='Não consegui avisar. Tente de novo.'}}});
+document.getElementById('f').onsubmit=function(ev){ev.preventDefault();var v=document.getElementById('c').value;if(v)abrir(v)};
+var h0=decodeURIComponent(location.hash.slice(1));if(h0){document.getElementById('c').value=h0;abrir(h0)}
+</script></main></body></html>
