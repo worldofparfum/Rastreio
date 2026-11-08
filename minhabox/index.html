@@ -33,6 +33,7 @@ label{display:flex;flex-direction:column;gap:6px;font-size:13px;color:var(--ink2
 .campos{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.campos .l2{grid-column:1/-1}
 form.entrar{max-width:400px;margin:0 auto}.dica{background:var(--panel2);border-radius:var(--r2);padding:10px 12px;font-size:13px;color:var(--ink2)}.dica b{color:var(--ink)}
 .topo{display:flex;justify-content:center;gap:4px;margin:-8px 0 12px}.topo button{min-height:34px;padding:6px 10px;font-size:13px}.ok{color:var(--pago);font-size:13px}
+.senha{position:relative;display:block}.senha input{padding-right:48px}.olho{position:absolute;right:2px;top:50%;transform:translateY(-50%);min-height:40px;width:44px;padding:0;background:transparent;border:0;color:var(--ink2)}.olho[aria-pressed=true]{color:var(--acc)}
 .ola{font-family:var(--f-d);font-size:22px;text-align:center}.atualizado{color:var(--ink2);text-align:center;font-size:13px;margin:4px 0 16px}
 .abas{display:flex;gap:6px;overflow-x:auto;margin:0 -16px 6px;padding:2px 16px;scrollbar-width:none}.abas::-webkit-scrollbar{display:none}
 .aba{flex:none;border-radius:999px;padding:9px 15px;min-height:40px;font-weight:600;font-size:14px;background:var(--panel);border:1px solid var(--line);color:var(--ink2)}
@@ -62,7 +63,7 @@ ul.lista{margin:0;padding-left:18px;color:var(--ink2);font-size:14px}
 <img class="logo" src="../logo.png" alt="" onerror="this.remove()"><h1>Minha Box</h1><p class="sub">World of Splits</p>
 <div id="entrar"><form class="entrar bloco" id="f" novalidate><h2>Entrar</h2>
 <label>Login<input id="lg" autocomplete="username" placeholder="Celular com DDD ou seu login" autocapitalize="none"></label>
-<label>Senha<input id="sn" type="password" autocomplete="current-password" autocapitalize="none"></label>
+<label>Senha<span class="senha"><input id="sn" type="password" autocomplete="current-password" autocapitalize="none"><button type="button" class="olho" data-olho aria-label="Mostrar senha"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg></button></span></label>
 <p class="erro" id="f-erro" hidden></p><button class="pri" type="submit">Entrar</button>
 <p class="dica"><b>Primeiro acesso?</b> O login é o seu celular com DDD. A senha são as 2 primeiras letras do seu nome + os 6 últimos números do seu CPF.<br>Ex.: Maria, CPF terminado em 123456 → <b>ma123456</b></p>
 <button class="sem" type="button" data-esqueci>Esqueci minha senha</button></form>
@@ -72,6 +73,7 @@ ul.lista{margin:0;padding-left:18px;color:var(--ink2);font-size:14px}
 <div id="out" aria-live="polite"></div>
 <script>
 var CONF={"empresa": "World of Splits", "whats": "", "pix": "739c3c17-3a05-40b0-8a88-051d0d14bf86", "titular": "", "parcelas": 6, "tipos": {"split": "Decants", "apc": "APC (frasco)"}, "pub": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAwle4XlfzCajKFOuz5CDnvr2W5p9vcIiO9HXdf0bz81ocWUEvmtz+L6zspQDRCN4i1112frLUA4Lco+OgGRS2GisVrj6haX4iDk4XW+B0E98BnJbJqSZm1LNtfA6iv7jUDSDK94EAnpYOr6dgzEP8GuakH+gzf2c2AyteVe2WkIAjl3p/t4SDM6Rs/VX0nxLCSsAM6bwviT1p9cf9xWoQLcfWP4XSmby7TFJ/J9vnYiOlJ3VEIqQj0fHHPjWyPaxjykG2IoLTgwUsH5+xptlrPvnaDDrMCUDP3S5oHTsPRsgVcfYLuWhwR9yfOLWqBO9zRgnjw/tHrlTXqsR8zJpmVQIDAQAB", "topico": "wos-mb-6k4fCQue2e3TxSeAGw2C4q3yVvOaum"};var D=null,S=null,ABA='box',FORM=false,CONTA=false,COD='',PADRAO='';
+var OLHO='<button type="button" class="olho" data-olho aria-label="Mostrar senha"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg></button>';
 function semAc(t){return String(t||'').normalize('NFD').replace(/[̀-ͯ]/g,'')}
 function telLogin(t){var d=String(t||'').replace(/\D/g,'');if(d.length>=12&&d.slice(0,2)==='55')d=d.slice(2);return d.length>=10?d.slice(0,2)+d.slice(-8):''}
 function normLogin(t){t=String(t||'').trim();if(t&&!/[A-Za-zÀ-ÿ]/.test(t)){var x=telLogin(t);return x?'tel:'+x:''}var n=semAc(t).toLowerCase().replace(/\s+/g,' ').trim();return n?'u:'+n:''}
@@ -122,7 +124,7 @@ function sugestao(){var p=String(D.nomeCompleto||'').trim().split(/\s+/);return 
 function tConta(){var prim=S.t!=='s';
   return '<div class="bloco"><h2>'+(prim?'Crie seu acesso':'Minha conta')+'</h2><p class="fraco peq">'+(prim?'Troque a senha por uma só sua. Se quiser, crie também um login mais fácil de lembrar, como seu nome e sobrenome. O celular continua valendo como login.':'Mude seu login ou sua senha. O celular continua valendo como login.')+'</p>'+
   '<form id="fc" class="campos" novalidate><label class="l2">Login novo (opcional)<input name="login" autocapitalize="none" autocomplete="username" placeholder="'+esc(sugestao()||'nome sobrenome')+'" value="'+esc(D.login||'')+'"></label>'+
-  '<label>Senha nova<input name="senha" type="password" autocomplete="new-password" placeholder="mínimo 6 caracteres"></label><label>Repita a senha<input name="senha2" type="password" autocomplete="new-password"></label>'+
+  '<label>Senha nova<span class="senha"><input name="senha" type="password" autocomplete="new-password" placeholder="mínimo 6 caracteres">'+OLHO+'</span></label><label>Repita a senha<span class="senha"><input name="senha2" type="password" autocomplete="new-password">'+OLHO+'</span></label>'+
   '<p class="erro l2" id="fc-erro" hidden></p><button class="pri l2" type="submit">Salvar acesso</button><button class="sem l2" type="button" data-depois>'+(prim?'Agora não':'Voltar')+'</button></form></div>'}
 async function salvarConta(f){var er=document.getElementById('fc-erro'),lg=f.elements.login.value.trim(),s1=f.elements.senha.value,s2=f.elements.senha2.value,b=f.querySelector('[type=submit]');
   var falha=function(t){er.textContent=t;er.hidden=false;b.disabled=false;b.textContent='Salvar acesso'};er.hidden=true;
@@ -224,7 +226,8 @@ function tela(){var o=document.getElementById('out');
   var abas=[['box','Minha box'],['colecao','Coleção'],['perfil','Perfil olfativo'],['aberturas','Aberturas']];
   var h='<p class="ola">Olá, '+esc(D.nome)+'!</p><p class="atualizado">Atualizado em '+esc(D.atualizado||'')+'</p><div class="topo"><button class="sem" data-conta>Minha conta</button><button class="sem" data-sair>Sair</button></div><div class="abas" role="tablist">'+abas.map(function(a){return '<button class="aba" role="tab" aria-selected="'+(ABA===a[0])+'" data-aba="'+a[0]+'">'+a[1]+'</button>'}).join('')+'</div>';
   o.innerHTML=h+(ABA==='colecao'?tColecao():ABA==='perfil'?tPerfil():ABA==='aberturas'?tAberturas():tBox())}
-document.addEventListener('click',async function(e){var t=e.target.closest('[data-aba],[data-dados],[data-fechar],[data-pular],[data-pix],[data-conta],[data-sair],[data-depois],[data-esqueci],[data-voltar]');if(!t)return;
+document.addEventListener('click',async function(e){var o=e.target.closest('[data-olho]');if(o){var inp=o.parentNode.querySelector('input'),ver=inp.type==='password';inp.type=ver?'text':'password';o.setAttribute('aria-pressed',ver);o.setAttribute('aria-label',ver?'Esconder senha':'Mostrar senha');return}
+  var t=e.target.closest('[data-aba],[data-dados],[data-fechar],[data-pular],[data-pix],[data-conta],[data-sair],[data-depois],[data-esqueci],[data-voltar]');if(!t)return;
   if(t.hasAttribute('data-sair'))return sair();
   if(t.hasAttribute('data-esqueci')){document.getElementById('f').hidden=true;document.getElementById('fe').hidden=false;document.getElementById('lge').value=document.getElementById('lg').value;return}
   if(t.hasAttribute('data-voltar')){location.reload();return}
