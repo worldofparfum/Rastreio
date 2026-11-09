@@ -33,6 +33,7 @@ label{display:flex;flex-direction:column;gap:6px;font-size:13px;color:var(--ink2
 .campos{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.campos .l2{grid-column:1/-1}
 form.entrar{max-width:400px;margin:0 auto}.dica{background:var(--panel2);border-radius:var(--r2);padding:10px 12px;font-size:13px;color:var(--ink2)}.dica b{color:var(--ink)}
 .topo{display:flex;justify-content:center;gap:4px;margin:-8px 0 12px}.topo button{min-height:34px;padding:6px 10px;font-size:13px}.ok{color:var(--pago);font-size:13px}
+.lista-adm{display:flex;flex-direction:column;gap:6px;margin-top:10px}.adm-item{display:flex;justify-content:space-between;align-items:center;gap:8px;text-align:left;width:100%;min-height:48px;background:var(--panel2);border:1px solid var(--line,rgba(255,255,255,.08));border-radius:var(--r2,10px);padding:8px 12px}.adm-item b{color:var(--ink)}
 .senha{position:relative;display:block}.senha input{padding-right:48px}.olho{position:absolute;right:2px;top:50%;transform:translateY(-50%);min-height:40px;width:44px;padding:0;background:transparent;border:0;color:var(--ink2)}.olho[aria-pressed=true]{color:var(--acc)}
 .ola{font-family:var(--f-d);font-size:22px;text-align:center}.atualizado{color:var(--ink2);text-align:center;font-size:13px;margin:4px 0 16px}
 .abas{display:flex;gap:6px;overflow-x:auto;margin:0 -16px 6px;padding:2px 16px;scrollbar-width:none}.abas::-webkit-scrollbar{display:none}
@@ -72,7 +73,7 @@ ul.lista{margin:0;padding-left:18px;color:var(--ink2);font-size:14px}
 <button class="pri" type="submit">Receber senha no WhatsApp</button><button class="sem" type="button" data-voltar>Voltar</button></form></div>
 <div id="out" aria-live="polite"></div>
 <script>
-var CONF={"empresa": "World of Splits", "whats": "", "pix": "739c3c17-3a05-40b0-8a88-051d0d14bf86", "titular": "", "parcelas": 6, "tipos": {"split": "Decants", "apc": "APC (frasco)"}, "pub": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAwle4XlfzCajKFOuz5CDnvr2W5p9vcIiO9HXdf0bz81ocWUEvmtz+L6zspQDRCN4i1112frLUA4Lco+OgGRS2GisVrj6haX4iDk4XW+B0E98BnJbJqSZm1LNtfA6iv7jUDSDK94EAnpYOr6dgzEP8GuakH+gzf2c2AyteVe2WkIAjl3p/t4SDM6Rs/VX0nxLCSsAM6bwviT1p9cf9xWoQLcfWP4XSmby7TFJ/J9vnYiOlJ3VEIqQj0fHHPjWyPaxjykG2IoLTgwUsH5+xptlrPvnaDDrMCUDP3S5oHTsPRsgVcfYLuWhwR9yfOLWqBO9zRgnjw/tHrlTXqsR8zJpmVQIDAQAB", "topico": "wos-mb-6k4fCQue2e3TxSeAGw2C4q3yVvOaum"};var D=null,S=null,ABA='box',FORM=false,CONTA=false,COD='',PADRAO='';
+var CONF={"empresa": "World of Splits", "whats": "", "pix": "739c3c17-3a05-40b0-8a88-051d0d14bf86", "titular": "", "parcelas": 6, "tipos": {"split": "Decants", "apc": "APC (frasco)"}, "pub": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAwle4XlfzCajKFOuz5CDnvr2W5p9vcIiO9HXdf0bz81ocWUEvmtz+L6zspQDRCN4i1112frLUA4Lco+OgGRS2GisVrj6haX4iDk4XW+B0E98BnJbJqSZm1LNtfA6iv7jUDSDK94EAnpYOr6dgzEP8GuakH+gzf2c2AyteVe2WkIAjl3p/t4SDM6Rs/VX0nxLCSsAM6bwviT1p9cf9xWoQLcfWP4XSmby7TFJ/J9vnYiOlJ3VEIqQj0fHHPjWyPaxjykG2IoLTgwUsH5+xptlrPvnaDDrMCUDP3S5oHTsPRsgVcfYLuWhwR9yfOLWqBO9zRgnjw/tHrlTXqsR8zJpmVQIDAQAB", "topico": "wos-mb-6k4fCQue2e3TxSeAGw2C4q3yVvOaum"};var D=null,S=null,ABA='box',FORM=false,CONTA=false,COD='',PADRAO='',ADM=null,BUSCA='';
 var OLHO='<button type="button" class="olho" data-olho aria-label="Mostrar senha"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg></button>';
 function semAc(t){return String(t||'').normalize('NFD').replace(/[̀-ͯ]/g,'')}
 function telLogin(t){var d=String(t||'').replace(/\D/g,'');if(d.length>=12&&d.slice(0,2)==='55')d=d.slice(2);return d.length>=10?d.slice(0,2)+d.slice(-8):''}
@@ -90,7 +91,7 @@ async function enviar(obj){ /* criptografa para o programa e entrega pelo canal 
   var pub=await crypto.subtle.importKey('spki',b64(CONF.pub),{name:'RSA-OAEP',hash:'SHA-256'},false,['encrypt']);
   var k=crypto.getRandomValues(new Uint8Array(32)),iv=crypto.getRandomValues(new Uint8Array(12));
   var ak=await crypto.subtle.importKey('raw',k,'AES-GCM',false,['encrypt']);
-  var ct=await crypto.subtle.encrypt({name:'AES-GCM',iv:iv},ak,new TextEncoder().encode(JSON.stringify(Object.assign({arq:S?S.arq:'',k:S?S.k:'',ts:Date.now()},obj))));
+  var ct=await crypto.subtle.encrypt({name:'AES-GCM',iv:iv},ak,new TextEncoder().encode(JSON.stringify(Object.assign({arq:S&&!S.adm?S.arq:'',k:S&&!S.adm?S.k:'',ts:Date.now()},obj))));
   var wk=await crypto.subtle.encrypt({name:'RSA-OAEP'},pub,k);
   var r=await fetch('https://ntfy.sh/'+CONF.topico,{method:'POST',body:JSON.stringify({v:1,k:de64(wk),iv:de64(iv),ct:de64(ct)})});if(!r.ok)throw new Error('envio')}
 async function desembrulhar(senha,e){var k=await crypto.subtle.importKey('raw',new TextEncoder().encode(senha),'PBKDF2',false,['deriveKey']);
@@ -102,6 +103,11 @@ async function entrar(login,senha){var n=normLogin(login),b=document.querySelect
   try{var r=await fetch('d/'+(await sha('wos-login:'+n))+'.json?t='+Date.now());}catch(e){return erroLogin('Sem conexão. Tente de novo.')}
   if(!r.ok)return erroLogin(n.slice(0,4)==='tel:'?'Não achamos esse celular. Use o número que você usa no grupo.':'Não achamos esse login. Tente com o seu celular.');
   var j=await r.json(),k=null,tipo='';
+  if(j.adm){try{var km=await crypto.subtle.importKey('raw',new TextEncoder().encode(senha),'PBKDF2',false,['deriveKey']);
+      var kk=await crypto.subtle.deriveKey({name:'PBKDF2',salt:b64(j.sal),iterations:j.it,hash:'SHA-256'},km,{name:'AES-GCM',length:256},false,['decrypt']);
+      ADM=JSON.parse(new TextDecoder().decode(await crypto.subtle.decrypt({name:'AES-GCM',iv:b64(j.iv)},kk,b64(j.ct))));}
+    catch(x){return erroLogin('Senha incorreta.')}
+    ls('mb-adm',JSON.stringify(ADM));S=null;ls('mb-sessao',null);return telaAdm()}
   for(var i=0;i<j.e.length&&!k;i++){var e=j.e[i],s=(e.t==='p'||e.t==='t')?normSenha(senha):e.t==='c'?normCod(senha):senha;
     try{k=await desembrulhar(s,e);tipo=e.t}catch(x){}}
   if(!k)return erroLogin('Senha incorreta. Se esqueceu, toque em "Esqueci minha senha".');
@@ -110,11 +116,18 @@ async function abrir(){var o=document.getElementById('out');o.innerHTML='<p clas
   try{var r=await fetch('b/'+S.arq+'.json?t='+Date.now());if(!r.ok)throw 0;var j=await r.json();
     var key=await crypto.subtle.importKey('raw',b64(S.k),'AES-GCM',false,['decrypt']);
     D=JSON.parse(new TextDecoder().decode(await crypto.subtle.decrypt({name:'AES-GCM',iv:b64(j.iv)},key,b64(j.ct))));COD=S.arq.slice(0,12);
-    CONTA=S.t!=='s'&&!ls('mb-conta-'+COD)&&!ls('mb-depois-'+COD);
-    FORM=!CONTA&&precisaDados();tela();
+    CONTA=!S.adm&&S.t!=='s'&&!ls('mb-conta-'+COD)&&!ls('mb-depois-'+COD);
+    FORM=!S.adm&&!CONTA&&precisaDados();tela();
   }catch(e){o.innerHTML='<p class="msg">Sua box está sendo preparada. Tente de novo em alguns minutos.</p><p class="msg"><button class="sem" data-sair>Sair</button></p>'}}
 function precisaDados(){return !D.dados.confirmado&&!ls('mb-dados-'+COD)&&!ls('mb-pular-'+COD)}
-function sair(){ls('mb-sessao',null);location.reload()}
+function sair(){ls('mb-sessao',null);ls('mb-adm',null);location.reload()}
+function fmtTel(t){return t?'('+t.slice(0,2)+') '+t.slice(2,-4)+'-'+t.slice(-4):''}
+function telaAdm(){var o=document.getElementById('out');document.getElementById('entrar').hidden=true;window.scrollTo(0,0);
+  var q=semAc(BUSCA).toLowerCase(),l=ADM.map(function(x,i){return Object.assign({i:i},x)}).filter(function(x){return !q||semAc(x.n+' '+x.tel+' '+x.login).toLowerCase().indexOf(q)>=0});
+  o.innerHTML='<p class="ola">Acesso mestre</p><div class="topo"><button class="sem" data-sair>Sair</button></div><div class="bloco"><h2>Boxes ('+ADM.length+')</h2>'+
+    '<label>Buscar cliente<input id="adm-busca" value="'+esc(BUSCA)+'" placeholder="Nome, celular ou login" autocomplete="off"></label>'+
+    '<div class="lista-adm">'+l.map(function(x){return '<button class="sem adm-item" data-adm="'+x.i+'"><b>'+esc(x.n)+'</b><span class="fraco peq">'+esc(fmtTel(x.tel))+(x.login?' · '+esc(x.login):'')+'</span></button>'}).join('')+(l.length?'':'<p class="fraco">Ninguém encontrado.</p>')+'</div></div>';
+  var bi=document.getElementById('adm-busca');bi.oninput=function(){BUSCA=bi.value;var pos=bi.selectionStart;telaAdm();var n=document.getElementById('adm-busca');n.focus();n.setSelectionRange(pos,pos)}}
 async function esqueci(){var v=document.getElementById('lge').value,er=document.getElementById('fe-erro'),b=document.querySelector('#fe [type=submit]');
   if(!normLogin(v)){er.textContent='Digite seu celular com DDD ou seu login.';er.hidden=false;return}b.disabled=true;b.textContent='Enviando...';
   try{await enviar({acao:'esqueci',login:v});document.getElementById('fe').innerHTML='<h2>Pedido enviado</h2><p class="fraco">Se esse login existir, a senha temporária chega no WhatsApp cadastrado em até 10 minutos. Ela vale por 24 horas.</p><button class="pri" type="button" data-voltar>Voltar para o login</button>'}
@@ -225,11 +238,13 @@ function tela(){var o=document.getElementById('out');
   if(CONTA){o.innerHTML='<p class="ola">Olá, '+esc(D.nome)+'!</p><div class="topo"><button class="sem" data-sair>Sair</button></div>'+tConta();var fc=document.getElementById('fc');fc.onsubmit=function(e){e.preventDefault();salvarConta(fc)};return}
   if(FORM){o.innerHTML='<p class="ola">Olá, '+esc(D.nome)+'!</p><div class="topo"><button class="sem" data-sair>Sair</button></div>'+tDados();var f=document.getElementById('fd');f.onsubmit=function(e){e.preventDefault();salvarDados(f)};f.elements.cep.onchange=function(){buscaCep(this.value)};return}
   var abas=[['box','Minha box'],['colecao','Coleção'],['perfil','Perfil olfativo'],['aberturas','Aberturas']];
-  var h='<p class="ola">Olá, '+esc(D.nome)+'!</p><p class="atualizado">Atualizado em '+esc(D.atualizado||'')+'</p><div class="topo"><button class="sem" data-conta>Minha conta</button><button class="sem" data-sair>Sair</button></div><div class="abas" role="tablist">'+abas.map(function(a){return '<button class="aba" role="tab" aria-selected="'+(ABA===a[0])+'" data-aba="'+a[0]+'">'+a[1]+'</button>'}).join('')+'</div>';
+  var h='<p class="ola">Olá, '+esc(D.nome)+'!</p><p class="atualizado">Atualizado em '+esc(D.atualizado||'')+'</p>'+(S.adm?'<div class="faixa"><p><b>Acesso mestre</b> <span class="fraco">vendo a box de '+esc(D.nomeCompleto||D.nome)+' (só leitura)</span></p></div><div class="topo"><button class="sem" data-lista>Voltar à lista</button><button class="sem" data-sair>Sair</button></div>':'<div class="topo"><button class="sem" data-conta>Minha conta</button><button class="sem" data-sair>Sair</button></div>')+'<div class="abas" role="tablist">'+abas.map(function(a){return '<button class="aba" role="tab" aria-selected="'+(ABA===a[0])+'" data-aba="'+a[0]+'">'+a[1]+'</button>'}).join('')+'</div>';
   o.innerHTML=h+(ABA==='colecao'?tColecao():ABA==='perfil'?tPerfil():ABA==='aberturas'?tAberturas():tBox())}
 document.addEventListener('click',async function(e){var o=e.target.closest('[data-olho]');if(o){var inp=o.parentNode.querySelector('input'),ver=inp.type==='password';inp.type=ver?'text':'password';o.setAttribute('aria-pressed',ver);o.setAttribute('aria-label',ver?'Esconder senha':'Mostrar senha');return}
-  var t=e.target.closest('[data-aba],[data-dados],[data-fechar],[data-pular],[data-pix],[data-conta],[data-sair],[data-depois],[data-esqueci],[data-voltar]');if(!t)return;
+  var t=e.target.closest('[data-aba],[data-dados],[data-fechar],[data-pular],[data-pix],[data-conta],[data-sair],[data-depois],[data-esqueci],[data-voltar],[data-adm],[data-lista]');if(!t)return;
   if(t.hasAttribute('data-sair'))return sair();
+  if(t.hasAttribute('data-adm')){var x=ADM[+t.getAttribute('data-adm')];S={arq:x.arq,k:x.k,t:'s',adm:1};ABA='box';abrir();return}
+  if(t.hasAttribute('data-lista')){S=null;D=null;telaAdm();return}
   if(t.hasAttribute('data-esqueci')){document.getElementById('f').hidden=true;document.getElementById('fe').hidden=false;document.getElementById('lge').value=document.getElementById('lg').value;return}
   if(t.hasAttribute('data-voltar')){location.reload();return}
   if(t.hasAttribute('data-conta')){CONTA=true;FORM=false;tela();window.scrollTo(0,0);return}
@@ -242,5 +257,6 @@ document.addEventListener('click',async function(e){var o=e.target.closest('[dat
     if(CONF.whats)window.open(wa('Olá! Paguei o frete '+t.dataset.pix+' da Minha Box no Pix ('+brl(t.dataset.valor)+'). Segue o comprovante. ('+D.nome+')'),'_blank','noopener')}catch(x){t.disabled=false;t.textContent='Não consegui avisar. Tente de novo.'}}});
 document.getElementById('f').onsubmit=function(ev){ev.preventDefault();entrar(document.getElementById('lg').value,document.getElementById('sn').value)};
 document.getElementById('fe').onsubmit=function(ev){ev.preventDefault();esqueci()};
-try{S=JSON.parse(ls('mb-sessao')||'null')}catch(e){S=null}if(S&&S.arq&&S.k)abrir();else S=null;
+try{ADM=JSON.parse(ls('mb-adm')||'null')}catch(e){ADM=null}
+try{S=JSON.parse(ls('mb-sessao')||'null')}catch(e){S=null}if(ADM)telaAdm();else if(S&&S.arq&&S.k)abrir();else S=null;
 </script></main></body></html>
