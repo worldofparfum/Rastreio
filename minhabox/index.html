@@ -167,6 +167,7 @@ async function salvarDados(f){var d={};new FormData(f).forEach(function(v,k){d[k
   if(d.cep.replace(/\D/g,'').length!==8){er.textContent='Confira o CEP.';er.hidden=false;return}
   if(!cpfOk(d.cpf)){er.textContent='Confira o CPF: ele é obrigatório para a etiqueta dos Correios.';er.hidden=false;return}
   if(falta.length){er.textContent='Preencha todos os campos de endereço.';er.hidden=false;return}
+  if(d.nome.split(/\s+/).filter(function(p){return p.replace(/[^A-Za-zÀ-ÿ]/g,'').length>=2}).length<2){er.textContent='Coloque o nome completo de quem recebe (nome e sobrenome): os Correios exigem.';er.hidden=false;return}
   var b=f.querySelector('[type=submit]');b.disabled=true;b.textContent='Enviando...';
   try{await enviar({acao:'dados',dados:d});ls('mb-dados-'+COD,String(Date.now()));FORM=false;ABA='box';tela();
   }catch(e){er.textContent='Não consegui enviar agora. Tente de novo em instantes.';er.hidden=false;b.disabled=false;b.textContent='Salvar dados'}}
