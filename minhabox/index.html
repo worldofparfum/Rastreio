@@ -154,7 +154,7 @@ async function salvarConta(f){var er=document.getElementById('fc-erro'),lg=f.ele
     FORM=precisaDados();tela();
     document.getElementById('out').insertAdjacentHTML('afterbegin','<div class="faixa"><p><b>Acesso salvo.</b> <span class="fraco">'+(lg&&s1?'O login e a senha novos passam':lg?'O login novo passa':'A senha nova passa')+' a valer em até 10 minutos.</span></p></div>')}
   catch(e){falha('Não consegui salvar agora. Tente de novo em instantes.')}}
-var SIT={a_pagar:['Aguardando pagamento','t-atrasado'],a_chegar:['A caminho do estoque','t-novo'],disponivel:['Pronto para envio','t-pago'],preparando:['Preparando o envio','t-cobrado'],enviado:['Enviado','t-cobrado'],entregue:['Entregue','t-pago']};
+var SIT={a_pagar:['Aguardando pagamento','t-atrasado'],a_chegar:['A caminho do estoque','t-novo'],a_caminho_sp:['Indo para São Paulo','t-novo'],disponivel:['Pronto para envio','t-pago'],preparando:['Preparando o envio','t-cobrado'],enviado:['Enviado','t-cobrado'],entregue:['Entregue','t-pago']};
 var ROT=['Pedido','Pago','Chegou','Enviado','Entregue'];
 function tag(s){return '<span class="tag '+s[1]+'"><i></i>'+esc(s[0])+'</span>'}
 function item(x){var s=SIT[x.situacao]||[x.situacao,''];return '<div class="item"><div class="cab"><b>'+esc(x.perfume)+'</b>'+tag(s)+'</div>'+
@@ -216,9 +216,13 @@ function tBox(){var it=D.itens,g=function(s){return it.filter(function(x){return
   if(D.aberto.valor>0)h+='<div class="bloco"><h2>Em aberto · <span class="num">'+brl(D.aberto.valor)+'</span></h2>'+g(['a_pagar']).map(item).join('')+
     (D.aberto.link?'<a class="btn pri cheio" target="_blank" rel="noopener" href="'+esc(D.aberto.link)+'">Pagar '+brl(D.aberto.valor)+' · Pix ou até '+CONF.parcelas+'x sem juros</a>':
      (CONF.pix?'<p class="peq fraco">Chave Pix'+(CONF.titular?' ('+esc(CONF.titular)+')':'')+'</p><div class="pix">'+esc(CONF.pix)+'</div>':'')+(CONF.whats?'<a class="btn cheio" target="_blank" rel="noopener" href="'+esc(wa('Olá! Paguei '+brl(D.aberto.valor)+' dos itens da minha box. ('+D.nome+')'))+'">Mandar comprovante no WhatsApp</a>':''))+'</div>';
-  var pr=g(['disponivel','preparando']);if(pr.length)h+='<div class="bloco"><h2>Pronto para envio · '+pr.length+'</h2>'+pr.map(item).join('')+'</div>';
+  var dec=function(l){return l.filter(function(x){return x.tipo!=='APC'})},apc=function(l){return l.filter(function(x){return x.tipo==='APC'})};
+  var pr=dec(g(['disponivel','preparando']));if(pr.length)h+='<div class="bloco"><h2>Decants prontos para envio · '+pr.length+'</h2>'+pr.map(item).join('')+'</div>';
   h+=secFrete();
-  var ac=g(['a_chegar']);if(ac.length)h+='<div class="bloco"><h2>A caminho · '+ac.length+'</h2><p class="peq fraco">Já é seu: assim que chegar ao nosso estoque, libera para envio.</p>'+ac.map(item).join('')+'</div>';
+  var ac=dec(g(['a_chegar']));if(ac.length)h+='<div class="bloco"><h2>Decants a caminho · '+ac.length+'</h2><p class="peq fraco">Já é seu: assim que chegar ao nosso estoque, libera para envio.</p>'+ac.map(item).join('')+'</div>';
+  var ap=apc(g(['disponivel','preparando','a_caminho_sp','a_chegar']));
+  if(ap.length){var o={disponivel:0,preparando:1,a_caminho_sp:2,a_chegar:3};ap.sort(function(a,b){return o[a.situacao]-o[b.situacao]});
+    h+='<div class="bloco"><h2>Seus APCs · '+ap.length+'</h2><p class="peq fraco">Os APCs (frascos) saem de São Paulo. Quando o perfume chega para os decants, o frasco segue para SP e fica pronto para envio em cerca de 7 dias úteis.</p>'+ap.map(item).join('')+'</div>'}
   if(D.emSplit.length)h+='<div class="bloco"><h2>Em splits abertos</h2><p class="peq fraco">A cobrança vem quando o split fechar.</p><ul class="lista">'+D.emSplit.map(function(x){return '<li>'+esc(x.perfume)+' · '+ml(x.ml)+'</li>'}).join('')+'</ul></div>';
   var en=g(['enviado','entregue']);if(en.length)h+='<div class="bloco"><h2>Já enviados · '+en.length+'</h2>'+en.slice().reverse().slice(0,15).map(item).join('')+(en.length>15?'<p class="peq fraco">Os outros estão na sua coleção.</p>':'')+'</div>';
   if(D.rastreios.length)h+='<div class="bloco"><h2>Rastreios</h2>'+D.rastreios.map(function(r){return '<div class="item"><div class="cab"><b class="num">'+esc(r.rastreio)+'</b><a href="https://rastreamento.correios.com.br/app/index.php?objetos='+encodeURIComponent(r.rastreio)+'" target="_blank" rel="noopener">Ver nos Correios</a></div><p class="peq fraco">'+esc(r.servico)+(r.postadoEm?' · postado '+esc(r.postadoEm):'')+'</p></div>'}).join('')+'</div>';
