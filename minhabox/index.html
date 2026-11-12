@@ -80,7 +80,8 @@ body.dentro .logo{width:36px;height:36px;margin:0 auto 4px}body.dentro h1{font-s
 .erro{color:var(--atrasado);font-size:13px}
 details summary{cursor:pointer;color:var(--acc);font-size:13px}
 ul.lista{margin:0;padding-left:18px;color:var(--ink2);font-size:14px}
-@media (max-width:420px){.campos{grid-template-columns:1fr}h2{font-size:18px}}
+@media (max-width:420px){.campos:not(.fd){grid-template-columns:1fr}h2{font-size:18px}}
+.cid{display:grid;grid-template-columns:minmax(0,1fr) 76px;gap:10px}
 @media (prefers-reduced-motion:no-preference){.bloco{animation:sobe .25s ease both}@keyframes sobe{from{opacity:0;transform:translateY(6px)}}}
 </style></head><body><main>
 <img class="logo" src="../logo.png" alt="" onerror="this.remove()"><h1>Minha Box</h1><p class="sub">World of Splits</p>
@@ -191,17 +192,17 @@ function item(x){var s=sit(x),et=etapas(x);return '<details class="item"><summar
 /* ---------- dados de entrega ---------- */
 function tDados(){var d=D.dados,v=function(k){return esc(d[k]||'')};
   return '<div class="bloco"><h2>Seus dados de entrega</h2><p class="fraco peq">'+(d.confirmado?'Confira e atualize se for mandar para outro lugar.':'Antes de tudo, confirme para onde enviamos sua box. Usamos esses dados só para gerar a etiqueta dos Correios.')+'</p>'+
-  '<form id="fd" class="campos" novalidate>'+
+  '<form id="fd" class="campos fd" novalidate>'+
   '<label class="l2">Nome completo de quem recebe<input name="nome" autocomplete="name" required value="'+v('nome')+'"></label>'+
-  '<label>CPF de quem recebe<input name="cpf" inputmode="numeric" autocomplete="off" placeholder="'+(d.cpf||'000.000.000-00')+'"></label>'+
+  '<label>CPF<input name="cpf" inputmode="numeric" autocomplete="off" placeholder="'+(d.cpf||'000.000.000-00')+'"></label>'+
   '<label>Celular<input name="telefone" inputmode="tel" autocomplete="tel" value="'+v('telefone')+'"></label>'+
-  '<label class="l2">CEP<input name="cep" inputmode="numeric" autocomplete="postal-code" value="'+v('cep')+'"></label>'+
+  '<label class="l2">CEP<input name="cep" inputmode="numeric" autocomplete="postal-code" placeholder="00000-000" value="'+v('cep')+'"><span class="peq fraco">Preenche rua, bairro e cidade sozinho.</span></label>'+
   '<label class="l2">Rua<input name="rua" autocomplete="address-line1" value="'+v('rua')+'"></label>'+
-  '<label>Número<input name="numero" value="'+v('numero')+'"></label>'+
+  '<label>Número<input name="numero" inputmode="numeric" value="'+v('numero')+'"></label>'+
   '<label>Complemento<input name="complemento" placeholder="Apto, bloco..." value="'+v('complemento')+'"></label>'+
-  '<label>Bairro<input name="bairro" value="'+v('bairro')+'"></label>'+
-  '<label>Cidade<input name="cidade" autocomplete="address-level2" value="'+v('cidade')+'"></label>'+
-  '<label>UF<input name="uf" maxlength="2" autocomplete="address-level1" value="'+v('uf')+'"></label>'+
+  '<label class="l2">Bairro<input name="bairro" value="'+v('bairro')+'"></label>'+
+  '<div class="l2 cid"><label>Cidade<input name="cidade" autocomplete="address-level2" value="'+v('cidade')+'"></label>'+
+  '<label>UF<input name="uf" maxlength="2" autocomplete="address-level1" value="'+v('uf')+'"></label></div>'+
   '<p class="erro l2" id="fd-erro" hidden></p>'+
   '<button class="pri l2" type="submit">Salvar dados</button>'+(d.confirmado||!FORM?'<button class="sem l2" type="button" data-fechar>Voltar</button>':'<button class="sem l2" type="button" data-pular>Agora não</button>')+'</form></div>'}
 function cpfOk(c){c=c.replace(/\D/g,'');if(c.length!==11||/^(\d)\1+$/.test(c))return false;for(var n=9;n<11;n++){var s=0;for(var i=0;i<n;i++)s+=c[i]*(n+1-i);if((s*10%11)%10!=c[n])return false}return true}
@@ -255,10 +256,10 @@ function tBox(){var it=D.itens,g=function(s){return it.filter(function(x){return
   if(semItem.length)h+='<div class="bloco"><h2>Rastreios</h2>'+semItem.map(function(r){return '<div class="item"><div class="cab"><b class="num">'+esc(r.rastreio)+'</b><a href="'+correios(r.rastreio)+'" target="_blank" rel="noopener">Ver nos Correios</a></div><p class="peq fraco">'+esc(r.servico)+(r.postadoEm?' · postado '+esc(r.postadoEm):'')+'</p></div>'}).join('')+'</div>';
   return h||'<div class="bloco"><p class="fraco">Sua box está vazia por enquanto.</p></div>'}
 function chips(l){return '<div class="chips">'+l.map(function(x){return '<span class="chip">'+esc(x)+'</span>'}).join('')+'</div>'}
-function lista(t,l){return l&&l.length?'<div class="bloco"><h2>'+t+' · '+l.length+'</h2>'+chips(l)+'</div>':''}
+function lista(t,l,sub){return l&&l.length?'<div class="bloco"><h2>'+t+' <span class="cont">· '+l.length+'</span></h2>'+(sub?'<p class="peq fraco">'+sub+'</p>':'')+chips(l)+'</div>':''}
 function tColecao(){var c=D.colecao;if(!c)return '<div class="bloco"><p class="fraco">Sua coleção aparece aqui depois das primeiras compras.</p></div>';
   return '<div class="numeros"><div><b class="num">'+c.perfumes+'</b><span>perfumes</span></div><div><b class="num">'+Math.round(c.ml)+'</b><span>ml no total</span></div><div><b class="num">'+c.casas+'</b><span>casas</span></div></div>'+
-  (c.desde?'<p class="atualizado" style="margin-top:12px">Com a gente desde '+esc(c.desde)+'</p>':'')+lista('Seus favoritos',c.gosta)+lista('Quis conhecer melhor',c.interesse)+lista('Você provou',c.conhecer)}
+  (c.desde?'<p class="atualizado" style="margin-top:12px">Com a gente desde '+esc(c.desde)+'</p>':'')+lista('Seus favoritos',c.gosta,'Os que você levou em APC, em quantidade maior ou mais de uma vez.')+lista('Pegou para usar',c.interesse,'Decants de tamanho médio.')+lista('Pegou para conhecer',c.conhecer,'Decants pequenos, para provar.')}
 function chamaQuiz(){var feito=D.quiz||ls('mb-quiz-'+COD);return '<div class="bloco"><h3>'+(feito?'Quiz respondido ✓':'Deixe seu perfil mais certeiro')+'</h3><p class="peq fraco">'+(feito?'Suas respostas já entram no seu perfil e nas sugestões de aberturas.':'Responda o quiz (uns 2 minutos): suas respostas entram no perfil e nas aberturas que combinam com você.')+'</p><button class="'+(feito?'sem':'pri')+'" data-aba="quiz">'+(feito?'Ver ou mudar respostas':'Responder o quiz')+'</button></div>'}
 function tPerfil(){var p=D.perfil;if(!p)return '<div class="bloco"><p class="fraco">Seu perfil olfativo se forma com mais algumas compras.</p></div>'+chamaQuiz();
   var bl=function(t,l){return l&&l.length?'<h3>'+t+'</h3>'+chips(l):''};
@@ -295,11 +296,11 @@ function tAberturas(){if(!D.aberturas.length)return '<div class="bloco"><p class
     return '<div class="bloco"><div class="cab"><h3>'+esc(a.perfume)+'</h3>'+(a.jaTem?'<span class="tag">Você já provou</span>':'')+'</div>'+(a.motivo?'<p class="peq fraco">'+esc(a.motivo)+'</p>':'')+
     (a.notas.length?chips(a.notas):'')+'<p class="peq fraco">Restam <b class="num">'+ml(a.resta)+'</b> no frasco.</p>'+
     (S.adm?'':'<p class="peq">Pedir no grupo:</p><div class="ops">'+a.precos.map(function(p){return '<button class="op" data-pedir="'+esc(a.perfume)+'" data-ml="'+p[2]+'">'+esc(p[0])+' · <span class="num">'+brl(p[1])+'</span></button>'}).join('')+
-      (!a.precos.length||a.precos[a.precos.length-1][2]<a.resta?'<button class="op" data-pedir="'+esc(a.perfume)+'" data-ml="'+a.resta+'">Os '+ml(a.resta)+' que restam</button>':'')+'</div>'+
+      (!a.precos.length||a.precos[a.precos.length-1][2]<a.resta?'<button class="op" data-pedir="'+esc(a.perfume)+'" data-ml="'+a.resta+'">Os '+ml(a.resta)+' que restam'+(a.restaPreco?' · <span class="num">'+brl(a.restaPreco)+'</span>':'')+'</button>':'')+'</div>'+
       '<p class="peq fraco">Abre o WhatsApp com a mensagem pronta: é só escolher o grupo e enviar.</p>')+'</div>'}).join('')}
 function tela(){var o=document.getElementById('out');document.body.classList.add('dentro');
-  if(CONTA){o.innerHTML='<p class="ola">Olá, '+esc(D.nome)+'!</p><div class="topo"><button class="sem" data-sair>Sair</button></div>'+tConta();var fc=document.getElementById('fc');fc.onsubmit=function(e){e.preventDefault();salvarConta(fc)};return}
-  if(FORM){o.innerHTML='<p class="ola">Olá, '+esc(D.nome)+'!</p><div class="topo"><button class="sem" data-sair>Sair</button></div>'+tDados();var f=document.getElementById('fd');f.onsubmit=function(e){e.preventDefault();salvarDados(f)};f.elements.cep.onchange=function(){buscaCep(this.value)};return}
+  if(CONTA){o.innerHTML='<div class="barra"><div><p class="ola">Olá, '+esc(D.nome)+'!</p></div><div class="acoes-topo"><button class="mini sem" data-sair>Sair</button></div></div>'+tConta();var fc=document.getElementById('fc');fc.onsubmit=function(e){e.preventDefault();salvarConta(fc)};return}
+  if(FORM){o.innerHTML='<div class="barra"><div><p class="ola">Olá, '+esc(D.nome)+'!</p></div><div class="acoes-topo"><button class="mini sem" data-sair>Sair</button></div></div>'+tDados();var f=document.getElementById('fd');f.onsubmit=function(e){e.preventDefault();salvarDados(f)};f.elements.cep.onchange=function(){buscaCep(this.value)};return}
   var abas=[['box','Minha box'],['colecao','Coleção'],['perfil','Perfil olfativo'],['aberturas','Aberturas']],ativa=ABA==='quiz'?'perfil':ABA;
   var h=(S.adm?'<div class="faixa"><p><b>Acesso mestre</b> <span class="fraco">vendo a box de '+esc(D.nomeCompleto||D.nome)+' (só leitura)</span></p></div>':'')+
     '<div class="barra"><div><p class="ola">Olá, '+esc(D.nome)+'!</p><p class="atualizado">Atualizado em '+esc(D.atualizado||'')+'</p></div><div class="acoes-topo">'+
